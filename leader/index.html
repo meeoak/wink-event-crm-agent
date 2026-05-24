@@ -1,0 +1,3291 @@
+<!doctype html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      :root {
+        --navy: #10233d;
+        --navy2: #ecf7fd;
+        --blue: #00a6df;
+        --pink: #f2498d;
+        --red: #e11d48;
+        --sat: #2563eb;
+        --line: #bdd9e8;
+        --bg: #f7fbff;
+        --panel: #ffffff;
+        --muted: #667085;
+        --event: #009fda;
+        --event2: #f2498d;
+        --event3: #6b5cff;
+        --time: #eaf8ff;
+        --pick: #fff7fb;
+        --db: #f3fbff;
+        --jos: #d8e8ff;
+        --victor: #e7ddff;
+        --giar: #d9f5ff;
+        --christina: #ffe4c4;
+        --lidia: #f8d4ea;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        color: #142033;
+        background: var(--bg);
+        font-size: 14px;
+      }
+
+      header {
+        min-height: 92px;
+        display: grid;
+        grid-template-columns: 250px minmax(520px, 1fr) auto;
+        gap: 18px;
+        align-items: center;
+        padding: 18px 28px;
+        background: #fff;
+        color: var(--navy);
+        border-bottom: 1px solid var(--line);
+        box-shadow: 0 8px 24px rgba(16, 35, 61, 0.08);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 26px;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+      .brand-logo {
+        display: block;
+        width: 86px;
+        height: auto;
+      }
+      .brand strong {
+        color: var(--navy);
+        letter-spacing: 0;
+      }
+
+      .leader-console {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 14px;
+        border: 1px solid #d9e9f5;
+        border-radius: 16px;
+        background: linear-gradient(90deg, rgba(0, 159, 218, 0.07), rgba(242, 73, 141, 0.07));
+      }
+      .leader-label {
+        min-width: 90px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      nav { display: flex; gap: 10px; align-items: center; }
+      .tab {
+        height: 44px;
+        padding: 0 22px;
+        border: 1px solid #d4e5f2;
+        background: #f4f9ff;
+        color: var(--navy);
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+      .tab.active { background: var(--pink); border-color: var(--pink); color: #fff; box-shadow: 0 8px 18px rgba(242, 73, 141, 0.22); }
+
+      .toolbar { display: flex; gap: 10px; align-items: center; }
+      input, select, textarea {
+        font-family: Arial, sans-serif;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        font-size: 14px;
+      }
+      input, select { height: 40px; padding: 0 11px; }
+      textarea { min-height: 86px; padding: 10px; resize: vertical; }
+      button {
+        height: 40px;
+        border: 0;
+        border-radius: 9px;
+        padding: 0 16px;
+        background: var(--pink);
+        color: #fff;
+        font-weight: 900;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      button.secondary { background: var(--blue); }
+      button.danger { background: var(--red); }
+      button.edit { background: var(--sat); }
+      button.ghost { background: #eef6ff; color: var(--navy); border: 1px solid #cce1f2; }
+      button.small {
+        height: 32px;
+        padding: 0 12px;
+        border-radius: 7px;
+        font-size: 12px;
+      }
+      button:disabled { opacity: 0.55; cursor: wait; }
+      .toolbar input,
+      .toolbar select,
+      .toolbar button {
+        height: 44px;
+        font-size: 14px;
+        border-radius: 8px;
+      }
+      .toolbar input,
+      .toolbar select {
+        min-width: 148px;
+        font-weight: 800;
+      }
+      .toolbar select.app-switch {
+        min-width: 150px;
+        padding: 0 12px;
+        background: #fff;
+        color: var(--navy);
+      }
+      .toolbar button {
+        min-width: 88px;
+        padding: 0 18px;
+      }
+      .month-nav {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #f8fbff;
+      }
+      .month-arrow {
+        width: 44px;
+        min-width: 44px !important;
+        height: 44px !important;
+        padding: 0 !important;
+        border-radius: 11px;
+        background: #eef6ff;
+        color: var(--navy);
+        border: 1px solid #cfe2f0;
+        font-size: 24px !important;
+      }
+      .month-display {
+        min-width: 136px;
+        text-align: center;
+        color: var(--navy);
+        font-size: 17px;
+        font-weight: 900;
+      }
+      .toolbar input#month {
+        width: 1px;
+        min-width: 1px;
+        height: 1px;
+        padding: 0;
+        border: 0;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 270px minmax(0, 1fr);
+        min-height: calc(100vh - 82px);
+      }
+      aside {
+        background: #fff;
+        border-right: 1px solid var(--line);
+        padding: 12px;
+      }
+      main { padding: 12px; overflow: auto; }
+
+      .status {
+        min-height: 32px;
+        margin-bottom: 10px;
+        padding: 8px 4px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .status.error { color: var(--red); font-weight: 800; }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 14px;
+      }
+      .card h3 {
+        margin: 0 0 14px;
+        font-size: 16px;
+      }
+      .metric-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .metric {
+        background: #f8fbff;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        padding: 9px;
+      }
+      .metric label {
+        display: block;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 800;
+      }
+      .metric strong {
+        display: block;
+        margin-top: 2px;
+        font-size: 22px;
+      }
+      .list {
+        display: grid;
+        gap: 6px;
+        font-size: 12px;
+        max-height: 240px;
+        overflow: auto;
+      }
+      .list-item {
+        padding: 7px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #fbfdff;
+      }
+      .list-item small { color: var(--muted); display: block; margin-top: 2px; }
+
+      .agent-picker-card {
+        border-color: rgba(242, 73, 141, 0.28);
+        background: linear-gradient(180deg, #fff, #f8fbff);
+      }
+      .side-card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .side-card-head h3 {
+        margin: 0;
+      }
+      .side-tag {
+        display: inline-flex;
+        align-items: center;
+        height: 24px;
+        padding: 0 9px;
+        border-radius: 999px;
+        background: #ffe7f1;
+        color: #b83268;
+        font-size: 11px;
+        font-weight: 900;
+      }
+      .agent-picker-card select {
+        width: 100%;
+        height: 42px;
+        font-weight: 900;
+        background: #fff;
+      }
+      .agent-context {
+        min-height: 70px;
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #d7e7f4;
+        border-radius: 10px;
+        background: #f8fbff;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+      }
+      .agent-context strong {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--navy);
+        font-size: 16px;
+      }
+      .agent-context span {
+        display: block;
+        margin-top: 3px;
+      }
+      .side-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .side-actions button {
+        width: 100%;
+        min-width: 0;
+      }
+      .side-actions .wide {
+        grid-column: 1 / -1;
+      }
+
+      .view { display: none; }
+      .view.active { display: block; }
+
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+      .section-head.tight-head { margin-bottom: 8px; }
+      .section-head h2 { margin: 0; font-size: 18px; }
+      .mvp-flow {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin: 14px 0;
+      }
+      .mvp-step {
+        min-height: 96px;
+        padding: 16px;
+        border: 1px solid #d3e5f3;
+        border-radius: 14px;
+        background: #fff;
+      }
+      .mvp-step strong {
+        display: inline-grid;
+        width: 30px;
+        height: 30px;
+        place-items: center;
+        border-radius: 999px;
+        background: var(--navy);
+        color: #fff;
+        font-size: 14px;
+      }
+      .mvp-step span {
+        display: block;
+        margin-top: 10px;
+        color: var(--navy);
+        font-size: 16px;
+        font-weight: 900;
+      }
+      .mvp-step small {
+        display: block;
+        margin-top: 5px;
+        color: var(--muted);
+        line-height: 1.35;
+      }
+      .status-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .status-tabs.compact-tabs {
+        margin: 2px 0 12px;
+      }
+      .calendar-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+      .calendar-toolbar .status-tabs {
+        margin-bottom: 0;
+      }
+      .calendar-toolbar select {
+        min-width: 240px;
+        height: 38px;
+        font-weight: 900;
+        background: #fff;
+      }
+      .filter-tab {
+        height: 36px;
+        padding: 0 14px;
+        border: 1px solid var(--line);
+        background: #fff;
+        color: #142033;
+        border-radius: 999px;
+        font-weight: 900;
+      }
+      .filter-tab.active {
+        background: var(--navy);
+        color: #fff;
+        border-color: var(--navy);
+      }
+      .action-row {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .management-grid {
+        display: grid;
+        grid-template-columns: minmax(280px, 0.8fr) minmax(320px, 1fr) minmax(320px, 1fr);
+        gap: 14px;
+        align-items: start;
+      }
+      .team-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(260px, 1fr));
+        gap: 12px;
+      }
+      .team-card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        overflow: hidden;
+      }
+      .team-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 12px;
+        background: #f8fbff;
+        border-bottom: 1px solid var(--line);
+      }
+      .team-head strong {
+        display: block;
+        font-size: 15px;
+      }
+      .team-head small {
+        color: var(--muted);
+        font-weight: 800;
+      }
+      .team-count {
+        min-width: 52px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        color: #142033;
+        font-weight: 900;
+      }
+      .agent-chip-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 12px;
+      }
+      .agent-chip {
+        height: auto;
+        padding: 8px 11px;
+        border-radius: 999px;
+        border: 1px solid rgba(20, 32, 51, 0.12);
+        color: #142033;
+        font-size: 13px;
+        font-weight: 800;
+      }
+      .agent-chip.team-leader {
+        background: var(--navy);
+        border-color: var(--navy);
+        color: #fff;
+        box-shadow: 0 5px 14px rgba(16, 35, 61, 0.18);
+      }
+      .agent-chip.ended {
+        opacity: 0.45;
+        text-decoration: line-through;
+      }
+      .role-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 66px;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: #eaf4ff;
+        color: #12304d;
+        font-weight: 900;
+      }
+      .role-pill.leader {
+        background: var(--navy);
+        color: #fff;
+      }
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 56px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: #e7f5ff;
+        font-weight: 900;
+      }
+      .status-pill.ended { background: #ffe4ea; color: var(--red); }
+      .filter-bar {
+        display: grid;
+        grid-template-columns: minmax(180px, 1.5fr) repeat(2, minmax(130px, 0.8fr));
+        gap: 8px;
+        margin-bottom: 12px;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #f8fbff;
+      }
+      .filter-bar input,
+      .filter-bar select {
+        width: 100%;
+      }
+
+      .calendar {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(238px, 1fr));
+        border-top: 1px solid var(--line);
+        border-left: 1px solid var(--line);
+        background: #edf8ff;
+        box-shadow: 0 10px 28px rgba(0, 166, 223, 0.11);
+      }
+      .weekday {
+        padding: 13px 4px;
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        background: var(--navy);
+        color: #fff;
+        font-size: 15px;
+        font-weight: 900;
+        text-align: center;
+      }
+      .weekday.saturday-head { background: var(--sat); }
+      .weekday.sunday-head { background: var(--red); }
+
+      .day {
+        min-height: 188px;
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        background: #ffffff;
+      }
+      .day.empty { background: #f8fcff; }
+      .day-head {
+        min-height: 50px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2px;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid var(--line);
+        background: linear-gradient(90deg, rgba(242,73,141,0.11), rgba(0,166,223,0.12));
+        color: var(--navy);
+        font-size: 22px;
+        font-weight: 900;
+        text-align: center;
+      }
+      .day-name { font-size: 12px; color: var(--muted); }
+      .day.saturday .day-head { background: #e6f3ff; color: var(--sat); }
+      .day.saturday .day-name { color: var(--sat); }
+      .day.sunday .day-head { background: #fff0f4; color: var(--red); }
+      .day.sunday .day-name { color: var(--red); }
+      .events { padding: 7px; }
+
+      .event {
+        margin-bottom: 9px;
+        border: 1px solid #c8e0ef;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #fff;
+      }
+      .event-name {
+        padding: 8px 5px;
+        background: var(--event);
+        color: #fff;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 900;
+      }
+      .event:nth-child(2n) .event-name { background: var(--event2); }
+      .event:nth-child(3n) .event-name { background: var(--event3); }
+
+      .slot {
+        display: grid;
+        grid-template-columns: 56px 56px minmax(72px, 1fr) 36px;
+        border-top: 1px solid var(--line);
+      }
+      .slot > div {
+        min-height: 31px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-right: 1px solid var(--line);
+      }
+      .slot > div:last-child { border-right: 0; }
+      .time { background: var(--time); }
+      .agent { background: var(--pick); }
+      .db { background: var(--db); }
+      .slot.teamJos .agent { background: var(--jos); }
+      .slot.teamVictor .agent { background: var(--victor); }
+      .slot.teamGiar .agent { background: var(--giar); }
+      .slot.teamChristina .agent { background: var(--christina); }
+      .slot.teamLidia .agent { background: var(--lidia); }
+      .time select, .agent select, .db input {
+        width: 100%;
+        height: 28px;
+        border: 0;
+        background: transparent;
+        text-align: center;
+        font-size: 11px;
+        font-weight: 800;
+      }
+      .agent select { font-weight: 700; }
+      .db input {
+        padding: 0 2px;
+        font-size: 12px;
+      }
+      .event-select-board {
+        display: block;
+      }
+      .event-month-grid {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(126px, 1fr));
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        overflow: hidden;
+        background: #d6e9f5;
+        box-shadow: 0 12px 28px rgba(16, 35, 61, 0.06);
+      }
+      .event-weekday {
+        min-height: 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8fbff;
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        color: #506070;
+        font-size: 14px;
+        font-weight: 900;
+      }
+      .event-weekday.saturday-head { color: var(--sat); background: #eef6ff; }
+      .event-weekday.sunday-head { color: var(--red); background: #fff2f6; }
+      .event-day-cell {
+        min-height: 188px;
+        padding: 9px;
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        background: #fff;
+      }
+      .event-day-cell.empty {
+        background: #f5f9fc;
+      }
+      .event-day-cell.saturday {
+        background: linear-gradient(180deg, #f4f9ff 0, #fff 82px);
+      }
+      .event-day-cell.sunday {
+        background: linear-gradient(180deg, #fff6f9 0, #fff 82px);
+      }
+      .event-day-num {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 8px;
+        color: var(--navy);
+      }
+      .event-day-num strong {
+        font-size: 28px;
+        line-height: 1;
+      }
+      .event-day-num span {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+      }
+      .event-day-cell.saturday .event-day-num strong,
+      .event-day-cell.saturday .event-day-num span { color: var(--sat); }
+      .event-day-cell.sunday .event-day-num strong,
+      .event-day-cell.sunday .event-day-num span { color: var(--red); }
+      .event-chip-list {
+        display: grid;
+        gap: 6px;
+      }
+      .event-chip {
+        width: 100%;
+        min-height: 64px;
+        height: auto;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        align-items: stretch;
+        padding: 8px 10px;
+        border-radius: 10px;
+        border: 1px solid rgba(16, 35, 61, 0.08);
+        background: #f4faff;
+        color: var(--navy);
+        text-align: left;
+        box-shadow: none;
+      }
+      .event-chip.active {
+        outline: 2px solid var(--pink);
+        outline-offset: 1px;
+      }
+      .event-chip-name {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        font-size: 13px;
+        font-weight: 900;
+        line-height: 1.25;
+      }
+      .event-chip-meta {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        justify-content: flex-start;
+        font-size: 11px;
+        color: var(--muted);
+        font-weight: 900;
+      }
+      .chip-dot {
+        min-width: 30px;
+        padding: 4px 7px;
+        border-radius: 999px;
+        background: #fff;
+        text-align: center;
+        white-space: nowrap;
+      }
+      .chip-dot.open { color: var(--blue); }
+      .chip-dot.pending { color: #b45309; background: #fff7d6; }
+      .chip-dot.approved { color: #166534; background: #dcfce7; }
+      .event-chip.color-0 { border-left: 5px solid var(--blue); }
+      .event-chip.color-1 { border-left: 5px solid var(--pink); }
+      .event-chip.color-2 { border-left: 5px solid #6b5cff; }
+      .event-chip.color-3 { border-left: 5px solid #22c55e; }
+      .assignment-chip {
+        width: 100%;
+        min-height: 62px;
+        height: auto;
+        display: grid;
+        gap: 3px;
+        padding: 8px 9px;
+        border: 1px solid rgba(16, 35, 61, 0.08);
+        border-left: 5px solid var(--blue);
+        border-radius: 10px;
+        background: #f8fbff;
+        color: var(--navy);
+        text-align: left;
+      }
+      .assignment-chip.teamJos { border-left-color: #7aa7ff; background: #f5f8ff; }
+      .assignment-chip.teamVictor { border-left-color: #a78bfa; background: #f8f5ff; }
+      .assignment-chip.teamGiar { border-left-color: #38bdf8; background: #f2fbff; }
+      .assignment-chip.teamChristina { border-left-color: #f59e0b; background: #fff9ed; }
+      .assignment-chip.teamLidia { border-left-color: #ec4899; background: #fff4fb; }
+      .assignment-chip strong {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 13px;
+      }
+      .assignment-chip span {
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 900;
+      }
+      .assignment-chip small {
+        color: #24364f;
+        font-size: 12px;
+        font-weight: 900;
+      }
+      .work-board-list {
+        display: grid;
+        gap: 10px;
+      }
+      .work-item {
+        display: grid;
+        grid-template-columns: minmax(170px, 1.1fr) minmax(180px, 1.4fr) minmax(130px, 0.8fr) minmax(180px, 1.2fr);
+        gap: 10px;
+        align-items: center;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #fff;
+      }
+      .work-item strong {
+        display: block;
+        font-size: 15px;
+      }
+      .work-item small {
+        display: block;
+        margin-top: 3px;
+        color: var(--muted);
+        font-weight: 800;
+      }
+      .work-actions {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+      }
+      .work-actions input {
+        width: 76px;
+        text-align: center;
+        font-weight: 900;
+      }
+      .work-filter-bar {
+        grid-template-columns: repeat(2, minmax(180px, 1fr));
+      }
+      .claim-detail {
+        width: min(860px, calc(100vw - 42px));
+        max-height: calc(100vh - 120px);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: #fff;
+        overflow: auto;
+        box-shadow: 0 12px 28px rgba(16, 35, 61, 0.08);
+      }
+      .claim-modal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: rgba(16, 35, 61, 0.36);
+        z-index: 30;
+      }
+      .claim-modal.open {
+        display: flex;
+      }
+      .claim-detail-head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: start;
+        padding: 15px 16px;
+        border-bottom: 1px solid var(--line);
+        background: linear-gradient(90deg, #f6fbff, #fff6fb);
+      }
+      .claim-detail-title { min-width: 0; }
+      .claim-detail-head strong {
+        display: block;
+        font-size: 20px;
+        color: var(--navy);
+      }
+      .claim-detail-head span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-weight: 900;
+      }
+      .claim-close {
+        width: 38px;
+        min-width: 38px;
+        height: 38px;
+        padding: 0;
+        border-radius: 999px;
+        background: #eef6ff;
+        color: var(--navy);
+        border: 1px solid var(--line);
+        font-size: 20px;
+        line-height: 1;
+      }
+      .claim-detail-body {
+        padding: 14px;
+      }
+      .claim-card {
+        border: 1px solid #cfe3f2;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #fbfdff;
+      }
+      .claim-event-name {
+        padding: 12px 14px;
+        background: var(--event);
+        color: #fff;
+        font-size: 16px;
+        font-weight: 900;
+        text-align: center;
+      }
+      .claim-slot {
+        display: grid;
+        grid-template-columns: 78px 78px minmax(150px, 1fr) 58px auto;
+        align-items: center;
+        border-top: 1px solid var(--line);
+        background: #fff;
+      }
+      .claim-slot > div {
+        min-height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-right: 1px solid var(--line);
+      }
+      .claim-slot > div:last-child { border-right: 0; }
+      .claim-slot .time { background: #eff9ff; }
+      .claim-slot .agent { background: #fff8fc; }
+      .claim-slot .db { background: #f4fbff; }
+      .claim-slot .slot-actions {
+        gap: 5px;
+        padding: 4px;
+        justify-content: flex-start;
+      }
+      .claim-slot select,
+      .claim-slot input {
+        width: 100%;
+        height: 30px;
+        border: 0;
+        background: transparent;
+        text-align: center;
+        font-weight: 900;
+        font-size: 12px;
+      }
+      .claim-slot .db input {
+        max-width: 54px;
+      }
+      .claim-action {
+        height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        font-size: 12px;
+      }
+      .claim-status {
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: #fff4cc;
+        color: #7a4b00;
+        font-size: 12px;
+        font-weight: 900;
+      }
+      .claim-status.done {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .empty-board {
+        min-height: 220px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px dashed var(--line);
+        border-radius: 16px;
+        background: #fff;
+        color: var(--muted);
+        font-weight: 900;
+      }
+      .muted-mini {
+        display: block;
+        padding: 10px 4px;
+        color: #9aa7b4;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      @media (max-width: 1280px) {
+        .claim-detail {
+          width: min(760px, calc(100vw - 24px));
+        }
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .form-grid.compact { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .field.full { grid-column: 1 / -1; }
+      .field label {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+      }
+      .shift-one,
+      .shift-two,
+      .shift-three {
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #d7e8f4;
+      }
+      .shift-one { background: #eef9ff; }
+      .shift-two { background: #fff3f8; }
+      .shift-three { background: #f3f0ff; }
+      .shift-card.disabled {
+        display: none;
+      }
+      .date-mode-panel {
+        display: none;
+        margin-top: 8px;
+        padding: 12px;
+        border: 1px solid #d7e8f4;
+        border-radius: 14px;
+        background: #fbfdff;
+      }
+      .date-mode-panel.active {
+        display: block;
+      }
+      .date-picker-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .date-picker-head strong {
+        font-size: 16px;
+        color: var(--navy);
+      }
+      .date-picker-nav {
+        display: flex;
+        gap: 6px;
+      }
+      .date-picker-nav button {
+        height: 34px;
+        min-width: 42px;
+        padding: 0 12px;
+        border-radius: 999px;
+      }
+      .date-picker-weekdays,
+      .date-picker-grid {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: 6px;
+      }
+      .date-picker-weekdays {
+        margin-bottom: 6px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+        text-align: center;
+      }
+      .date-day {
+        height: 36px;
+        border: 1px solid #cfe3f2;
+        border-radius: 10px;
+        background: #fff;
+        color: var(--navy);
+        font-weight: 900;
+      }
+      .date-day.outside {
+        opacity: 0.35;
+      }
+      .date-day.selected {
+        border-color: var(--pink);
+        background: var(--pink);
+        color: #fff;
+      }
+      .date-day.today {
+        box-shadow: inset 0 0 0 2px #5aa2d9;
+      }
+      .selected-date-line {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+      }
+      .date-list-input {
+        display: none;
+      }
+      .date-mode-note {
+        display: block;
+        margin-top: 5px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+      }
+      .field input, .field textarea { width: 100%; }
+      .field select { width: 100%; }
+      table { width: 100%; border-collapse: collapse; font-size: 14px; }
+      th, td {
+        padding: 10px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+      }
+      th { background: #f8fbff; color: var(--muted); }
+      .num-cell,
+      th.num-col {
+        width: 54px;
+        text-align: center;
+        font-weight: 900;
+        color: var(--muted);
+      }
+      #agentRows td:first-child,
+      #agentView th:first-child {
+        width: 54px;
+        text-align: center;
+        font-weight: 900;
+        color: var(--muted);
+      }
+      #agentRows td:nth-child(2),
+      #agentView th:nth-child(2) {
+        min-width: 150px;
+      }
+      .muted { color: var(--muted); font-size: 13px; }
+
+      @media (max-width: 1180px) {
+        header { grid-template-columns: 1fr; height: auto; padding: 14px; }
+        .leader-console { align-items: flex-start; flex-direction: column; }
+        nav { flex-wrap: wrap; }
+        .layout { grid-template-columns: 1fr; }
+        aside { border-right: 0; border-bottom: 1px solid var(--line); }
+        .calendar { grid-template-columns: repeat(2, minmax(260px, 1fr)); }
+        .weekday { display: none; }
+        .management-grid { grid-template-columns: 1fr; }
+        .mvp-flow { grid-template-columns: 1fr 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <img class="brand-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAABjCAYAAAAy9iqlAAAACXBIWXMAABCcAAAQnAEmzTo0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAA5qSURBVHgB7Z3PjxxHFcdf1Yy9SQiwAQkljkN6SUBCQvIahFDCYXsdwQ1lnUPg5ln+Aa8VIWNz8PhATISQJ2cOM3OLUMJuJDiAFLsdiUQIQcYHLiTW9MaJDadMQuSw9k4X71X17M6s50dXdXVPj7c+0kjecU/3TPe3X7969eo9Bo67aPtr8/fxB05GACsMwMO35ul9AdDi+NqOus3HgpcCcBQOBo4BbvqnPcFLl0EJeQxig0XRqUeCl0LYp1z3T/sHSqUjXSEeKjH20Z1u9+o2bLUWgloHpoQT9B5uHDvbholi3iHcim4dneYFnAYk5BIv1WHEeUJRNSDqnp/Gzc7BscMH/tlFSC5mwjvI71+DfQSdo9KEJxi6ZhV6yn3g/2wRcsYJug/OhQ+aMGAnYB/BOawn3NTj/MBlcuEgR5yg+xDx4E8TD/YJ5GqA3u+d7zKW6xPMCdqRmBLn2i4EZzzXJ5gTdB8cWAi6CNGCfYLhE8zkM8Y4QfeB8eUQNGGM7RtBzwJlcOywDfe3SuJ2B0d6ya0KhqfAYZ/m5kkQEfnfHr4oLBrKF4MAIngdVhfCYR9zFrqPhaDaEUy8nHR7AeL8fp5YyYR6ex4a7XUUcw12B6BkYMh/X8GTXkNRt3GbOm7r7f24E/QebkdzNfSLw0nbkZgfvXShCg571NuLKNZ3gIQ7mQpuuy5vgD6coPdAVpqJaBn/uTF0AxS7iMRxJ2bLkIvBIEHKwQBotaOBsKDzoYcQuxHHaVasXIKl/lwFl5RkGbKwDC6ii1EBExhf6v/TCXoMh4MXKYLhohhZoVwMmnn0wJyB2LgTdNGRPmIXfUqGF58/DuoCzsNgfDeULxFdRZ8owCmQ1qgoQGFQUYwqpI9TD3x+QNCUB3yA37fCgHn0d5dBi3e3w8PBr61Yqaz33ztGGeYW96Y1zpSrQCLmcAJHnjQ48lGgkz7hyRfjuC2clO802gFavwaGuK4UStzKxTgXh+RsMJDpKNNHSQRz/HPn8O4edZAQJxCqj7zxyyYYkPX+e8c4wO6rxlOtw+76cJuJU19948IGFBUlZLRcQOfJ1gxbGAu7mVbYHx47U0VjdA40OXTpRZWmTGE2/YHfJAKoLCz3/pAWeo4/gAcR4+bpPSFE48axM4uHLl04BZpkvX8avHEuT9Q4EXhlwdav+6eXk1jrm8fOVvA7ncCpwN4jHidcRCuKxNWSEDXr8efeI1hYnyr2cJ9VFFIFmu0qnFgwNhqpsOdiDMJ4o/9PThcO9jjWYz69hqK7CBpkvn//tBenNCY6UXFi+kjI0t9YPnNZoD1BMft9+50HwXx8ApwUvNTG36VtqYYyOJGQZd4DCbsRT0jkll/xyYGD5P5czOj3hXDi8YEblEsrpAVbo4uedOus9x8xXgXNpPw4DXIo0jVSQh4LCr764bGzdUiDegQnnUiwRUUec8gsm22uf+5B+MGPnqN/2vKX+8FBMCzvfZPL0bMmc/z+SvKts90/+t5LoMmoNEiVjC4Sn3x0DCs3n/mFWXpkNv5kUtSxMxT1b7/5LSnm6w9+HjJgA8V8dNiYgGsl4sRopRFmvX8DQYza/52Sfr6vAIMJgemKuUcmoiYX49x3n5KvTw7OgWU6eMKP4yDwOIq5M2wDF4fuoyRAW9DkV4Mu6ScTbOHF3+UoWIBcjJ8u/xD++aUvQwaQVV4dJeQeLpcjb5qbNJjUv3GyY1EO2lLyuye+IV2MDMQ80Sr34wSdJ/R4V6GrorEG9Xd9MKDnYqx9fykLF4Os8gIKOfHcgXM58oRBuqhIlrAyPTkCnY9k6GJ0YvdCexLMWei8qLd9kNPYhcXXsdIZuhiBrlXux1novKD8BTu05EtEm2q/OwlL6f3yhFaaQnLkZliGrPJ5FHINUuAEnQcqNOZDOhp4wV/GC94afQyBU9ypCt/4chZxzOCL3IwMxBzELkYIKXGCzoWunyBjbhRqlL+6EIzdSomhgoJsxL66B0bIuPpIK0mDP4tYscr9OB86D1jJ1Gp24hmxIPEnaFu6AfakVSaG8WdH/ddbX3kY3n74EFgiiH+bNTETTtD5YObfKusVgi7kltBnzRj5XV/DgaAF6CY9JVM+M8jTdoLOGlpmZJZlFqayXuqzIegzP2o6/JUnrQi6Ydsq9+MEnTldD0wQUeL6IKP3AWa5z7x0BLJjDWcm21klRjlBZ07JAyN4AOkxiuVCdPuhYW8//e8bYAmVGNVsWy/k6ASdOZFpUnsI6QnBCOYNe/fi22+CRdSCg2bbVnxe4gRdVBIk4uSyjz4Of/opPGXPSitoeZhFF8QJ2qFF7a034Qu3b4Nl4tzs91Kv3HGCdmjx2Kf/hfN/exsyAEVdWk/rgjhBO7T58bV/wat/+oMUt3WUC2K85tEJ2mHE0/+5Ca/++Y/wPIo7AxZNXZBCCloIkdsye4c5ZKFrf7kiXxlYayMXhKOJ1x4Jc2CPJ9nu/WfOGDn5nLNEgf24r6A2zDTPwTEUstJkra1HQAhNF4RWfWtfXAGwMql2BpUEKAtmtlZNMD9JIRcUvlFgnke8DQ6rkIV+DUX9wtW/QwbELsjkBQjkcrRAn/mD/IGRTRWpkEuyftmjoUIuVEVp1DFu+lQPI3kNjX7uwPbH4MiEF67+A/76+1cyckHKlye5IOVIwCY36PiNH1lE0b6DogtQfFfpPXJFBFA3VuaBFdgaHmPtxjNnAqopxxjrkH+NxzkimH7X1x6uaHm2kJhJ1L858m18fQesolwQf9SCgLIQ3Q10vk+CGeh2sBUWl7IS8i2Du2MSsqacqn+BooZUMKqf7MgDstbPX3sXvvfcT0KwW4fEj4vk3JWCyqW1EvtnkMS60ABHbkjXgxL5bWQPDuINW0Uvw3Y6rcxmn+gKOPKFckpWn1iTboKdpKse/t6MPSloHkUN2Aegs9JwfQWnyOpCQ1YMFcJejWoBlf4/paDpIke0ovhex3V9nT7k865+rWLRWg/MRezMFN4RB6tJGk7OKq7ra8HoWWvNak1DGN54kxpOdkW0CvcmG9NrlMlNBtwh2MPk+PkECcha02JZWjRrzsB3HcjlkBGPSKTZefHAp85WdGuaN6rJxFUAthCRgb8amXxnc2jRLJX/MrmRhRgY5N+VnHQouFDLXNTk2uTh3ghoUZvjhaCWyOLghE0IukyKa6uaGiEkJ0xRgmAInFZY61hc9HG/Hgzdk8n5ESLZzaGs9YL2b+el9YE/h21Doo4iih3aFx3O9DW3xGdHt8Tc0SwHohHGPbfErWUdv/l/0UHtRaWJ4tpqAJSEXpWkEGxB+1K+apho+3GP/6gbgCZMgF7JgtWFqoa13tjbNGjstBvlUVBTHpauXpoCbw7y0fdOO1s9xpjjJOWD5bM1ziDRzCndNIcv/ypZPkm9vSJ7Wg+fMeso14BXba8D7Du+N6H2XRhPJwfjdkMdwpI0VZLgtaAnpPFgvN5eA3UtvD3/M/J8JZpH3hEdwBL+GA90ECLAuxTjvxeamR0jPs42h5fTNtZs+9X5Oba1PvaiCdmz8PyhSxf0C6ZQWV3Oj0C0/RDw8kcQUTtjaGUm5LuPT1GBxbu+Q8JyY+/7Z1bKnK0n2VZE4vijgYVGp7JYTxe/84EvQnTnY4DSxqjzpZ0YQZl0nHMfRbqEH6eT4+00BlIXusOABYxBS3S7r5vcnZTnXC7BErokPlCyP6M7lHm7W5APzjp0DHp91r3VTOonJ+Wm//OKkNaMemxTj0LyQ0VLMLhyO/qsZvt4s8SHy2caY5+oeK7w2p06HLzYgJzJIJPIsR8Y2SZZPpGj1WnF/J2gHcaoXHXmR5x5JcY+Mn0iOxyOETgLPS1ocMZxBK+Sa7z43RZekQ2IoJlFqdnCsXsOKJ++l5MRt9wwKyXsBD0NaHk+K1Eu76h1mTjo7Z6C1SfTRwiKSnPzxISG9hia667qngMn6LxRbZGTLdIV28ujZu1mGnVDJwn9deSk0Ki+MkNwhWbyRqdXISsXt69hGlgpaTWA+XgyKjFO0Hmiqvn7Gp/woH7NaGV7Yam/VwG99YV+fN4S4QSdLz7owvi5eHZv9pHuVsmgGGPXCbqYGBU/n7fYtHO6DM/LSPJBL+mWTtC5YpTsTxg3ly8MqjW0qfuU+Lw5QeeLeeI8DRBn1fVQkZ0UA9zIRTkKicpoMxU1iSJRllvhUN/bAzNCndClE3TepFvU4EOjPVuhPPV9Ew/q7oLxqtbm4MifRpsKWfpgTgMqC8Vf0KzEXAFz1LIsDVzz+mlAeQoslaArKJb5eIVJ8fKyyddXEyIVSIPqWa6FczmmgWwwn7rWGy3pMu5FkhlqAEhPoAqko6Ez5d3DCXpqSN8whHRk1pHViObmSXmTpfGZFcYr350PPU0oNqusmQ0apimXqdkNy/lgA7Xy3SjT0Al62tSv1XAkb1qfexj5CVv5yjSLaS/fRET43Z+ogiFO0EUgfdRj6F5BbDczST9VTxa6CVfALoEsDZYCJ+gioCwd+Z4e2CcEEgqJG8pm5RJ6pQ8gwoEoJ389ixnLUBZGTxm1cYIuCrvRAQ+yhSIHKB6qByIrY1F5hj4RydIU8zIhiHFq37cI6Qd5kwjjRP4QUuIEXSTyE3WRsCZmwgm6aOwvUVsVM+Hi0EVjt7iieWbebNCyLWbCWegiYz+kVwxkjxW2lsW0vRN00VEVOM1aTBePThwjr0FGOEHPAveGX92yXvt6CE7Qs0S9XY0nNGZp5UrmVrkfJ+hZY3Lh8iLRkB0BckxxdYKeVYot7I3YKLPgv2koVGQK4GDvS4KuRQUYfWME/S9iEom8tFyr6DlPgJ2czEoD+R1nJMLgJKeCrYEzAl6PzDYKGgBJ2tI5HES0lA3JQRlfUm8m8DL7dybGzkcDofD4XAUl/8DxIDSICUfGZwAAAAASUVORK5CYII=" alt="wink">
+        <strong>Event CRM</strong>
+      </div>
+      <div class="leader-console" aria-label="팀리더 관리 영역">
+        <span class="leader-label">팀리더 관리</span>
+        <nav>
+          <button class="tab active" data-view="dashboardView">운영 홈</button>
+          <button class="tab" data-view="calendarView">행사 선점</button>
+          <button class="tab" data-view="workView">승인/DB</button>
+          <button class="tab" data-view="eventView">이벤트 등록</button>
+          <button class="tab" data-view="agentView">팀·에이전트</button>
+          <button class="tab" data-view="statsView">통계</button>
+        </nav>
+      </div>
+      <div class="toolbar">
+        <div class="month-nav">
+          <button id="prevMonth" class="month-arrow" type="button" aria-label="이전달">‹</button>
+          <strong id="monthDisplay" class="month-display">-</strong>
+          <button id="nextMonth" class="month-arrow" type="button" aria-label="다음달">›</button>
+        </div>
+        <input id="month" type="month">
+        <select id="appSwitch" class="app-switch" aria-label="웹앱 이동">
+          <option value="">웹앱 이동</option>
+          <option value="leader">리더 웹앱</option>
+          <option value="agent">에이전트 웹앱</option>
+        </select>
+        <button id="reload" type="button">새로고침</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside>
+        <div class="card agent-picker-card">
+          <div class="side-card-head">
+            <h3>에이전트 선택</h3>
+            <span class="side-tag">본인 선택</span>
+          </div>
+          <select id="sidebarAgentSelect">
+            <option value="">에이전트 불러오는 중</option>
+          </select>
+          <div id="sidebarAgentInfo" class="agent-context">이름을 선택하면 내 업무와 행사 선점 화면을 바로 볼 수 있습니다.</div>
+          <div class="side-actions">
+            <button id="sidebarWorkButton" class="secondary" type="button">내 업무</button>
+            <button id="sidebarClaimButton" type="button">행사 선점</button>
+            <button id="sidebarTeamCalendarButton" class="ghost wide" type="button">내 팀 달력</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>운영 요약</h3>
+          <div class="metric-grid">
+            <div class="metric"><label>이벤트</label><strong id="mEvents">-</strong></div>
+            <div class="metric"><label>배정률</label><strong id="mRate">-</strong></div>
+            <div class="metric"><label>미배정</label><strong id="mOpen">-</strong></div>
+            <div class="metric"><label>총 DB</label><strong id="mDb">-</strong></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>미배정 슬롯</h3>
+          <div id="openList" class="list"></div>
+        </div>
+        <div class="card">
+          <h3>DB 미입력</h3>
+          <div id="dbMissingList" class="list"></div>
+        </div>
+      </aside>
+
+      <main>
+        <div id="status" class="status">달력을 불러오는 중...</div>
+
+        <section id="dashboardView" class="view active">
+          <div class="section-head">
+            <h2>MVP 운영 홈</h2>
+            <button class="secondary" data-view-jump="calendarView" type="button">행사 선점하기</button>
+          </div>
+          <div class="status-tabs" id="eventStatusTabs">
+            <button class="filter-tab active" data-event-filter="all" type="button">전체 <span id="countAll">0</span></button>
+            <button class="filter-tab" data-event-filter="unassigned" type="button">에이전트 미배정 <span id="countUnassigned">0</span></button>
+            <button class="filter-tab" data-event-filter="assigned" type="button">배정완료 <span id="countAssigned">0</span></button>
+            <button class="filter-tab" data-event-filter="ended" type="button">이벤트 종료 <span id="countEnded">0</span></button>
+          </div>
+          <div class="mvp-flow" aria-label="MVP 운영 흐름">
+            <div class="mvp-step"><strong>1</strong><span>이벤트 등록</span><small>시트 업로드 또는 웹 입력으로 행사, 날짜, 시간, 인원을 넣습니다.</small></div>
+            <div class="mvp-step"><strong>2</strong><span>행사 선점</span><small>에이전트가 왼쪽에서 본인을 선택한 뒤 원하는 슬롯을 선점합니다.</small></div>
+            <div class="mvp-step"><strong>3</strong><span>팀리더 승인</span><small>승인/DB 보드에서 승인중 슬롯을 빠르게 확정합니다.</small></div>
+            <div class="mvp-step"><strong>4</strong><span>DB 입력</span><small>행사 종료 후 같은 슬롯에 DB 수를 입력하고 통계를 확인합니다.</small></div>
+          </div>
+          <div class="card">
+            <div class="section-head tight-head">
+              <h3>자동화시트 동기화</h3>
+              <span id="syncInfo">필요한 항목만 골라서 불러올 수 있습니다.</span>
+            </div>
+            <div class="action-row">
+              <button id="importEventsSheet" type="button">이벤트 불러오기</button>
+              <button id="importAgentsSheet" class="secondary" type="button">에이전트관리 불러오기</button>
+              <button id="importTeamsSheet" class="secondary" type="button">팀관리 불러오기</button>
+              <button id="syncSheet" class="ghost" type="button">전체 동기화</button>
+              <button id="importSheet" class="ghost" type="button">배정슬롯 가져오기</button>
+              <button id="migrateSheet" class="ghost" type="button">마이그레이션 점검</button>
+              <button id="downloadCsv" class="ghost" type="button">CSV 다운로드</button>
+              <button id="downloadJson" class="ghost" type="button">JSON 다운로드</button>
+            </div>
+          </div>
+          <div class="card">
+            <h3>이벤트 운영 목록</h3>
+            <table>
+              <thead><tr><th class="num-col">NO</th><th>이벤트</th><th>기간</th><th>일수</th><th>기본 시간</th><th>상태</th><th>관리</th></tr></thead>
+              <tbody id="eventRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="calendarView" class="view">
+          <div class="section-head">
+            <h2>행사 선점 달력</h2>
+            <span id="monthLabel"></span>
+          </div>
+          <div class="calendar-toolbar">
+            <div class="status-tabs compact-tabs">
+              <button class="filter-tab active" data-calendar-mode="event" type="button">행사 선점</button>
+              <button class="filter-tab" data-calendar-mode="team" type="button">팀별 달력</button>
+              <button class="filter-tab" data-calendar-mode="agent" type="button">에이전트별 달력</button>
+            </div>
+            <select id="calendarOwnerFilter"></select>
+          </div>
+          <div class="status-tabs" id="claimStatusTabs">
+            <button class="filter-tab active" data-claim-filter="open" type="button">선택 가능 <span id="claimCountOpen">0</span></button>
+            <button class="filter-tab" data-claim-filter="pending" type="button">승인중 <span id="claimCountPending">0</span></button>
+            <button class="filter-tab" data-claim-filter="approved" type="button">승인완료 <span id="claimCountApproved">0</span></button>
+            <button class="filter-tab" data-claim-filter="db" type="button">DB 입력 <span id="claimCountDb">0</span></button>
+          </div>
+          <div id="calendar" class="event-select-board"></div>
+        </section>
+
+        <section id="workView" class="view">
+          <div class="section-head">
+            <h2>팀리더 승인/DB 보드</h2>
+            <span id="authInfo"></span>
+          </div>
+          <div class="status-tabs compact-tabs">
+            <button class="filter-tab active" data-work-tab="mine" type="button">내 일정 <span id="workCountMine">0</span></button>
+            <button class="filter-tab" data-work-tab="approval" type="button">승인 대기 <span id="workCountApproval">0</span></button>
+            <button class="filter-tab" data-work-tab="db" type="button">DB 입력 <span id="workCountDb">0</span></button>
+          </div>
+          <div class="filter-bar work-filter-bar">
+            <select id="workAgentFilter"></select>
+            <select id="workTeamFilter"></select>
+          </div>
+          <div class="card">
+            <h3 id="workTitle">내 일정</h3>
+            <div id="workBoardRows" class="work-board-list"></div>
+          </div>
+        </section>
+
+        <section id="eventView" class="view">
+          <div class="section-head">
+            <h2>이벤트 등록</h2>
+            <span>입력하면 달력에 바로 반영됩니다.</span>
+          </div>
+          <form id="eventForm" class="card">
+            <div class="form-grid">
+              <input name="originalEventId" type="hidden">
+              <div class="field"><label>이벤트명</label><input name="venue" required></div>
+              <div class="field"><label>Event ID</label><input name="eventId" placeholder="자동 생성 가능"></div>
+              <div class="field"><label>일정 방식</label><select name="eventMode" id="eventMode"><option value="period">기간 시작일~종료일</option><option value="dates">지정일 달력 선택</option></select></div>
+              <div class="field"><label>행사 시간 개수</label><select name="shiftCount" id="eventShiftCount"><option value="1">1부만 사용</option><option value="2" selected>1부 + 2부</option><option value="3">1부 + 2부 + 3부</option></select></div>
+              <div class="field schedule-period"><label>시작일</label><input name="startDate" type="date"></div>
+              <div class="field schedule-period"><label>종료일</label><input name="endDate" type="date"></div>
+              <div class="field shift-card shift-one" data-shift-card="1"><label>1부 시작</label><select name="time1Start" data-time-select data-default="10:00"></select></div>
+              <div class="field shift-card shift-one" data-shift-card="1"><label>1부 종료</label><select name="time1End" data-time-select data-default="14:00"></select></div>
+              <div class="field shift-card shift-one" data-shift-card="1"><label>1부 인원</label><input name="people1" type="number" min="0" max="20" value="2"></div>
+              <div class="field shift-card shift-two" data-shift-card="2"><label>2부 시작</label><select name="time2Start" data-time-select data-default="14:00"></select></div>
+              <div class="field shift-card shift-two" data-shift-card="2"><label>2부 종료</label><select name="time2End" data-time-select data-default="18:00"></select></div>
+              <div class="field shift-card shift-two" data-shift-card="2"><label>2부 인원</label><input name="people2" type="number" min="0" max="20" value="2"></div>
+              <div class="field shift-card shift-three" data-shift-card="3"><label>3부 시작</label><select name="time3Start" data-time-select data-default="18:00"></select></div>
+              <div class="field shift-card shift-three" data-shift-card="3"><label>3부 종료</label><select name="time3End" data-time-select data-default="22:00"></select></div>
+              <div class="field shift-card shift-three" data-shift-card="3"><label>3부 인원</label><input name="people3" type="number" min="0" max="20" value="2"></div>
+              <div class="field full" id="dateListField">
+                <label>지정일 선택</label>
+                <textarea class="date-list-input" name="dateList" readonly></textarea>
+                <div class="date-mode-panel" id="datePickerPanel">
+                  <div class="date-picker-head">
+                    <strong id="datePickerLabel">-</strong>
+                    <div class="date-picker-nav">
+                      <button class="ghost" type="button" id="prevDateMonth">이전</button>
+                      <button class="ghost" type="button" id="nextDateMonth">다음</button>
+                      <button class="secondary" type="button" id="clearDateSelection">선택 해제</button>
+                    </div>
+                  </div>
+                  <div class="date-picker-weekdays"><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span><span>일</span></div>
+                  <div class="date-picker-grid" id="datePickerGrid"></div>
+                  <div class="selected-date-line" id="dateSelectedSummary">선택된 날짜가 없습니다.</div>
+                </div>
+                <small class="date-mode-note" id="dateModeNote">기간 전체를 선택하면 시작일~종료일 전체가 자동 반영됩니다.</small>
+              </div>
+            </div>
+            <div style="margin-top:10px;">
+              <button id="eventSubmit" type="submit">이벤트 저장</button>
+              <button class="secondary" id="eventReset" type="button">새 이벤트 입력</button>
+            </div>
+          </form>
+          <div class="card">
+            <h3>등록된 이벤트 삭제</h3>
+            <table>
+              <thead><tr><th class="num-col">NO</th><th>이벤트</th><th>기간</th><th>일수</th><th>관리</th></tr></thead>
+              <tbody id="eventManageRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="agentView" class="view">
+          <div class="section-head">
+            <h2>에이전트 관리</h2>
+            <span>팀, 팀리더, 에이전트를 따로 등록하고 수정합니다.</span>
+          </div>
+          <div class="management-grid">
+            <form id="teamForm" class="card">
+              <h3>팀 관리</h3>
+              <div class="form-grid compact">
+                <input name="originalTeamKey" type="hidden">
+                <input name="teamKey" type="hidden">
+                <div class="field full"><label>팀명</label><input name="teamName" placeholder="예: Tim Jos Marsell" required></div>
+                <div class="field"><label>팀리더명</label><input name="teamLeader" placeholder="예: Jos Marsell"></div>
+                <div class="field"><label>상태</label><select name="status"><option>운영중</option><option>종료</option></select></div>
+                <div class="field full"><label>메모</label><input name="note" placeholder="지역, 운영 메모 등"></div>
+              </div>
+              <div style="margin-top:12px;" class="action-row">
+                <button id="teamSubmit" type="submit">팀 저장</button>
+                <button class="ghost" id="teamReset" type="button">새 팀</button>
+              </div>
+            </form>
+            <form id="leaderForm" class="card">
+              <h3>팀리더 등록</h3>
+              <div class="form-grid compact">
+                <input name="originalAgentName" type="hidden">
+                <div class="field"><label>팀</label><select name="teamKey" id="leaderTeamSelect" required></select></div>
+                <div class="field"><label>이름</label><input name="agentName" required></div>
+                <div class="field"><label>업무시작</label><input name="workStart" type="date"></div>
+                <div class="field"><label>거주지</label><input name="residence" placeholder="예: Jakarta Selatan"></div>
+                <div class="field"><label>연락처/WhatsApp</label><input name="phone"></div>
+                <div class="field"><label>로그인 이메일</label><input name="email" placeholder="name@company.com"></div>
+                <div class="field full"><label>메모</label><input name="note" placeholder="입사일, 특이사항 등"></div>
+              </div>
+              <div style="margin-top:12px;" class="action-row">
+                <button id="leaderSubmit" type="submit">팀리더 저장</button>
+                <button class="ghost" id="leaderReset" type="button">새 팀리더</button>
+              </div>
+            </form>
+            <form id="agentForm" class="card">
+              <h3>에이전트 등록</h3>
+              <div class="form-grid compact">
+                <input name="originalAgentName" type="hidden">
+                <div class="field"><label>팀</label><select name="teamKey" id="agentTeamSelect" required></select></div>
+                <div class="field"><label>이름</label><input name="agentName" required></div>
+                <div class="field"><label>업무시작</label><input name="workStart" type="date"></div>
+                <div class="field"><label>거주지</label><input name="residence" placeholder="예: Jakarta Selatan"></div>
+                <div class="field"><label>연락처/WhatsApp</label><input name="phone"></div>
+                <div class="field"><label>로그인 이메일</label><input name="email" placeholder="name@company.com"></div>
+                <div class="field full"><label>메모</label><input name="note" placeholder="입사일, 특이사항 등"></div>
+              </div>
+              <div style="margin-top:12px;" class="action-row">
+                <button id="agentSubmit" type="submit">에이전트 저장</button>
+                <button class="ghost" id="agentReset" type="button">새 에이전트</button>
+              </div>
+            </form>
+          </div>
+          <div class="card">
+            <h3>팀별 현황</h3>
+            <div id="teamCards" class="team-grid"></div>
+          </div>
+          <div class="card">
+            <h3>전체 에이전트 목록</h3>
+            <div class="status-tabs compact-tabs" id="agentStatusTabs">
+              <button class="filter-tab active" data-agent-status="" type="button">전체 <span id="agentCountAll">0</span></button>
+              <button class="filter-tab" data-agent-status="근무중" type="button">근무중 <span id="agentCountWorking">0</span></button>
+              <button class="filter-tab" data-agent-status="업무종료" type="button">업무종료 <span id="agentCountEnded">0</span></button>
+            </div>
+            <div class="filter-bar">
+              <input id="agentSearch" placeholder="이름, 거주지, 연락처 검색">
+              <select id="agentTeamFilter"></select>
+              <select id="agentRoleFilter">
+                <option value="">전체 역할</option>
+                <option value="팀리더">팀리더</option>
+                <option value="에이전트">에이전트</option>
+              </select>
+            </div>
+            <table>
+              <thead><tr><th>NO</th><th>팀</th><th>역할</th><th>이름</th><th>업무시작</th><th>업무종료</th><th>상태</th><th>거주지</th><th>연락처</th><th>이메일</th><th>관리</th></tr></thead>
+              <tbody id="agentRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="statsView" class="view">
+          <div class="section-head">
+            <h2>통계</h2>
+            <span id="statsSub"></span>
+          </div>
+          <div class="card">
+            <h3>에이전트 DB 순위</h3>
+            <table>
+              <thead><tr><th>순위</th><th>에이전트</th><th>DB</th></tr></thead>
+              <tbody id="rankRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const weekdays = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+      const TIME_OPTIONS = buildTimeOptions();
+      const LEADER_API_URL = 'https://script.google.com/macros/s/AKfycbzAfGJXv4aatclHflxYMJhqna29zmOiQ3fcE8wQTDN47hDMzRJj8k4GljZYot2c4BacPQ/exec';
+      const AGENT_WEBAPP_URL = 'https://meeoak.github.io/wink-event-crm-agent/';
+      installExternalGoogleScriptRun_();
+      let state = null;
+      let eventFilter = 'all';
+      let claimFilter = 'open';
+      let calendarMode = 'event';
+      let calendarOwnerFilter = '';
+      let activeClaimSelection = '';
+      let eventStatusMap = {};
+      let workTab = 'mine';
+      let workFilters = { agent: '', team: '' };
+      let selectedSidebarAgent = '';
+      let agentFilters = { search: '', team: '', role: '', status: '' };
+      let eventDateSelection = new Set();
+      let eventDatePickerMonth = null;
+
+      function installExternalGoogleScriptRun_() {
+        if (typeof google !== 'undefined' && google.script && google.script.run) return;
+        window.google = {
+          script: {
+            run: createExternalRunner_(null, null)
+          }
+        };
+      }
+
+      function createExternalRunner_(successHandler, failureHandler) {
+        return new Proxy({}, {
+          get(_, prop) {
+            if (prop === 'withSuccessHandler') {
+              return (handler) => createExternalRunner_(handler, failureHandler);
+            }
+            if (prop === 'withFailureHandler') {
+              return (handler) => createExternalRunner_(successHandler, handler);
+            }
+            return (...args) => {
+              externalLeaderCall_(String(prop), args)
+                .then((result) => {
+                  if (result && result.ok === false) throw new Error(result.message || '요청에 실패했습니다.');
+                  if (successHandler) successHandler(result);
+                })
+                .catch((error) => {
+                  if (failureHandler) failureHandler(error);
+                  else console.error(error);
+                });
+              return createExternalRunner_(successHandler, failureHandler);
+            };
+          }
+        });
+      }
+
+      function externalLeaderCall_(method, args) {
+        const callback = `__winkLeader${Date.now()}${Math.random().toString(16).slice(2)}`;
+        const params = new URLSearchParams({
+          api: 'leaderCall',
+          method,
+          args: JSON.stringify(args || []),
+          callback
+        });
+        return new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          const timer = setTimeout(() => {
+            cleanup();
+            reject(new Error('요청 시간이 초과되었습니다.'));
+          }, 30000);
+
+          window[callback] = (data) => {
+            cleanup();
+            resolve(data);
+          };
+
+          script.onerror = () => {
+            cleanup();
+            reject(new Error('API 연결에 실패했습니다.'));
+          };
+
+          function cleanup() {
+            clearTimeout(timer);
+            delete window[callback];
+            script.remove();
+          }
+
+          script.src = `${LEADER_API_URL}?${params.toString()}`;
+          document.body.appendChild(script);
+        });
+      }
+
+      function appsReady() {
+        return typeof google !== 'undefined' && google.script && google.script.run;
+      }
+
+      function setStatus(text, error) {
+        const node = $('status');
+        node.textContent = text || '';
+        node.className = error ? 'status error' : 'status';
+      }
+
+      function switchView(viewId) {
+        document.querySelectorAll('.tab').forEach((tab) => {
+          tab.classList.toggle('active', tab.dataset.view === viewId);
+        });
+        document.querySelectorAll('.view').forEach((view) => {
+          view.classList.toggle('active', view.id === viewId);
+        });
+      }
+
+      function load(month) {
+        if (!appsReady()) {
+          setStatus('로컬 파일 미리보기입니다. 실제 데이터는 배포 URL에서 열어야 불러올 수 있습니다.', true);
+          renderEmpty();
+          return;
+        }
+        const targetMonth = month || $('month').value || '';
+        if (targetMonth) {
+          $('month').value = targetMonth;
+          updateMonthDisplay(targetMonth);
+        }
+        setStatus('달력을 불러오는 중...');
+        $('reload').disabled = true;
+        google.script.run
+          .withSuccessHandler((data) => {
+            $('reload').disabled = false;
+            state = data;
+            render(data);
+            setStatus(`${data.month} 이벤트 ${data.eventCount}개를 불러왔습니다.`);
+          })
+          .withFailureHandler((err) => {
+            $('reload').disabled = false;
+            setStatus(err && err.message ? err.message : String(err), true);
+          })
+          .getCalendarWebData(targetMonth);
+      }
+
+      function renderEmpty() {
+        $('mEvents').textContent = '-';
+        $('mRate').textContent = '-';
+        $('mOpen').textContent = '-';
+        $('mDb').textContent = '-';
+        $('calendar').innerHTML = '';
+        activeClaimSelection = '';
+      }
+
+      function render(data) {
+        $('month').value = data.month;
+        updateMonthDisplay(data.month);
+        $('monthLabel').textContent = data.month;
+        const stats = data.stats || {};
+        eventStatusMap = buildEventStatusMap(data);
+        $('mEvents').textContent = stats.eventCount || 0;
+        $('mRate').textContent = (stats.assignedRate || 0) + '%';
+        $('mOpen').textContent = stats.unassignedSlots || 0;
+        $('mDb').textContent = stats.dbTotal || 0;
+        $('statsSub').textContent = `총 슬롯 ${stats.totalSlots || 0} / 배정 ${stats.assignedSlots || 0}`;
+        renderSidebarAgentPicker(data);
+        renderList('openList', stats.unassigned || [], (item) => `${item.date} ${item.eventName}<small>${item.time} ${item.slot}</small>`);
+        renderList('dbMissingList', stats.dbMissing || [], (item) => `${item.agent}<small>${item.date} ${item.eventName} ${item.time}</small>`);
+        renderEvents(data.events || []);
+        renderFilterCounts(data.events || []);
+        renderRanks(stats.topAgents || []);
+        renderAgents(data);
+        renderWorkBoard(data);
+        renderCalendar(data);
+      }
+
+      function updateMonthDisplay(monthValue) {
+        const text = String(monthValue || '').replace('-', '년 ') + (monthValue ? '월' : '');
+        $('monthDisplay').textContent = text || '-';
+      }
+
+      function shiftMonth(delta) {
+        const current = $('month').value || (state && state.month) || new Date().toISOString().slice(0, 7);
+        const parts = current.split('-').map(Number);
+        const date = new Date(parts[0], (parts[1] || 1) - 1 + delta, 1);
+        const next = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        activeClaimSelection = '';
+        load(next);
+      }
+
+      function handleAppSwitch() {
+        const select = $('appSwitch');
+        const value = select.value;
+        if (!value) return;
+        if (value === 'leader') {
+          setStatus('현재 리더 웹앱입니다.');
+          select.value = '';
+          return;
+        }
+        const month = $('month').value || (state && state.month) || '';
+        const url = AGENT_WEBAPP_URL + (month ? `?month=${encodeURIComponent(month)}` : '');
+        window.open(url, '_blank', 'noopener,noreferrer');
+        select.value = '';
+      }
+
+      function renderList(id, rows, mapper) {
+        $(id).innerHTML = rows.length
+          ? rows.map((row, index) => `<div class="list-item"><strong>${index + 1}. </strong>${mapper(row)}</div>`).join('')
+          : '<div class="list-item">없음</div>';
+      }
+
+      function getActiveAgentRecords(data) {
+        return (data.agentRecords || [])
+          .filter((record) => record.name && record.status !== '업무종료')
+          .sort((a, b) => String(a.teamName || '').localeCompare(String(b.teamName || '')) || String(a.role || '').localeCompare(String(b.role || '')) || String(a.name).localeCompare(String(b.name)));
+      }
+
+      function renderSidebarAgentPicker(data) {
+        const select = $('sidebarAgentSelect');
+        if (!select) return;
+        const records = getActiveAgentRecords(data);
+        const preferred = selectedSidebarAgent || select.value || ((data.auth || {}).agentName || '');
+        const grouped = {};
+        records.forEach((record) => {
+          const key = record.teamKey || record.teamName || 'unassigned';
+          if (!grouped[key]) grouped[key] = { label: record.teamName || '팀 미지정', rows: [] };
+          grouped[key].rows.push(record);
+        });
+        const groupedOptions = Object.values(grouped).map((group) => {
+          const options = group.rows.map((record) => {
+            const roleMark = record.role === '팀리더' ? ' TL' : '';
+            return `<option value="${escapeHtml(record.name)}">${escapeHtml(record.name + roleMark)}</option>`;
+          }).join('');
+          return `<optgroup label="${escapeHtml(group.label)}">${options}</optgroup>`;
+        }).join('');
+        select.innerHTML = '<option value="">에이전트 선택</option>' + groupedOptions;
+        if (preferred && records.some((record) => record.name === preferred)) {
+          selectedSidebarAgent = preferred;
+          select.value = preferred;
+        } else {
+          selectedSidebarAgent = '';
+          select.value = '';
+        }
+        renderSidebarAgentInfo();
+      }
+
+      function renderSidebarAgentInfo() {
+        const node = $('sidebarAgentInfo');
+        if (!node) return;
+        if (!state || !selectedSidebarAgent) {
+          node.innerHTML = '이름을 선택하면 내 업무와 행사 선점 화면을 바로 볼 수 있습니다.';
+          return;
+        }
+        const found = findAgent(selectedSidebarAgent);
+        if (!found) {
+          node.innerHTML = '선택한 에이전트 정보를 찾을 수 없습니다.';
+          return;
+        }
+        const record = found.record || {};
+        const team = found.team || {};
+        const role = record.role || '에이전트';
+        const status = record.status || '근무중';
+        node.innerHTML = `<strong>${escapeHtml(record.name)}</strong><span>${escapeHtml(team.name || record.teamName || '팀 미지정')} · ${escapeHtml(role)}</span><span>${escapeHtml(status)}${record.residence ? ' · ' + escapeHtml(record.residence) : ''}</span>`;
+      }
+
+      function requireSidebarAgent() {
+        if (!state) {
+          setStatus('먼저 달력 데이터를 불러와 주세요.', true);
+          return '';
+        }
+        if (!selectedSidebarAgent) {
+          setStatus('왼쪽에서 에이전트를 먼저 선택해 주세요.', true);
+          return '';
+        }
+        return selectedSidebarAgent;
+      }
+
+      function openSelectedAgentWork() {
+        const agent = requireSidebarAgent();
+        if (!agent) return;
+        workFilters.agent = agent;
+        workFilters.team = '';
+        workTab = 'mine';
+        switchView('workView');
+        renderWorkBoard(state);
+        setStatus(`${agent}님의 업무를 표시합니다.`);
+      }
+
+      function openSelectedAgentClaimCalendar() {
+        const agent = requireSidebarAgent();
+        if (!agent) return;
+        calendarMode = 'event';
+        claimFilter = 'open';
+        activeClaimSelection = '';
+        switchView('calendarView');
+        renderCalendar(state);
+        setStatus(`${agent}님 이름으로 행사 선점을 준비했습니다.`);
+      }
+
+      function openSelectedAgentTeamCalendar() {
+        const agent = requireSidebarAgent();
+        if (!agent) return;
+        const found = findAgent(agent);
+        calendarMode = 'team';
+        calendarOwnerFilter = found && found.team ? found.team.key : '';
+        activeClaimSelection = '';
+        switchView('calendarView');
+        renderCalendar(state);
+        setStatus(`${found && found.team ? found.team.name : '선택한'} 팀 달력을 표시합니다.`);
+      }
+
+      function buildEventStatusMap(data) {
+        const map = {};
+        (data.events || []).forEach((event) => {
+          map[event.id] = {
+            status: 'assigned',
+            total: 0,
+            assigned: 0,
+            unassigned: 0,
+            ended: event.lastDate && data.today && event.lastDate < data.today
+          };
+        });
+
+        (data.weeks || []).forEach((week) => {
+          week.forEach((day) => {
+            if (!day) return;
+            (day.events || []).forEach((event) => {
+              if (!map[event.id]) map[event.id] = { status: 'assigned', total: 0, assigned: 0, unassigned: 0, ended: false };
+              (event.slots || []).forEach((slot) => {
+                const assigned = slot.agent && slot.status === '배정완료';
+                map[event.id].total += 1;
+                if (assigned) map[event.id].assigned += 1;
+                else map[event.id].unassigned += 1;
+              });
+            });
+          });
+        });
+
+        Object.keys(map).forEach((id) => {
+          if (map[id].ended) map[id].status = 'ended';
+          else if (!map[id].total || map[id].unassigned > 0) map[id].status = 'unassigned';
+          else map[id].status = 'assigned';
+        });
+        return map;
+      }
+
+      function renderFilterCounts(events) {
+        const counts = { all: events.length, unassigned: 0, assigned: 0, ended: 0 };
+        events.forEach((event) => {
+          const status = eventStatusMap[event.id] && eventStatusMap[event.id].status;
+          if (counts[status] != null) counts[status] += 1;
+        });
+        $('countAll').textContent = counts.all;
+        $('countUnassigned').textContent = counts.unassigned;
+        $('countAssigned').textContent = counts.assigned;
+        $('countEnded').textContent = counts.ended;
+      }
+
+      function renderEvents(events) {
+        document.querySelectorAll('[data-event-filter]').forEach((button) => {
+          button.classList.toggle('active', button.dataset.eventFilter === eventFilter);
+        });
+
+        const filteredEvents = events.filter((event) => {
+          if (eventFilter === 'all') return true;
+          return eventStatusMap[event.id] && eventStatusMap[event.id].status === eventFilter;
+        });
+
+        const dashboardRows = filteredEvents.length ? filteredEvents.map((event, index) => {
+          const timeText = (event.shifts || []).map((shift, index) => `${shift.label || (index + 1) + '부'} ${shift.time} (${shift.people})`).join(', ');
+          const status = statusLabel(eventStatusMap[event.id] && eventStatusMap[event.id].status);
+          return `<tr><td class="num-cell">${index + 1}</td><td>${escapeHtml(event.venue)}</td><td>${event.firstDate} ~ ${event.lastDate}</td><td>${event.dateCount}</td><td>${timeText}</td><td>${status}</td><td><div class="action-row"><button class="small edit" type="button" data-edit-event="${escapeHtml(event.id)}">수정</button><button class="small danger" type="button" data-delete-event="${escapeHtml(event.id)}">삭제</button></div></td></tr>`;
+        }).join('') : '<tr><td colspan="7">이벤트가 없습니다.</td></tr>';
+        const manageRows = events.length ? events.map((event, index) => {
+          return `<tr><td class="num-cell">${index + 1}</td><td>${escapeHtml(event.venue)}</td><td>${event.firstDate} ~ ${event.lastDate}</td><td>${event.dateCount}</td><td><div class="action-row"><button class="small edit" type="button" data-edit-event="${escapeHtml(event.id)}">수정</button><button class="small danger" type="button" data-delete-event="${escapeHtml(event.id)}">삭제</button></div></td></tr>`;
+        }).join('') : '<tr><td colspan="5">이벤트가 없습니다.</td></tr>';
+        $('eventRows').innerHTML = dashboardRows;
+        $('eventManageRows').innerHTML = manageRows;
+      }
+
+      function statusLabel(status) {
+        if (status === 'ended') return '이벤트 종료';
+        if (status === 'assigned') return '배정완료';
+        return '에이전트 미배정';
+      }
+
+      function collectWorkItems(data) {
+        const items = [];
+        const teamByAgent = {};
+        (data.teamGroups || []).forEach((team) => {
+          (team.members || []).forEach((member) => {
+            teamByAgent[member.name] = team;
+          });
+        });
+        (data.weeks || []).forEach((week) => {
+          week.forEach((day) => {
+            if (!day) return;
+            (day.events || []).forEach((event) => {
+              (event.slots || []).forEach((slot) => {
+                const team = slot.agent ? (teamByAgent[slot.agent] || {}) : {};
+                items.push({
+                  key: workItemKey(day.date, event.id, slot.baseTime || slot.time, slot.slot),
+                  date: day.date,
+                  dayName: weekdays[(day.weekday + 6) % 7] || '',
+                  event,
+                  slot,
+                  team,
+                  teamKey: team.key || '',
+                  teamName: team.name || '미지정',
+                  status: slot.agent ? (slot.status === '배정완료' ? 'approved' : 'pending') : 'open'
+                });
+              });
+            });
+          });
+        });
+        return items.sort((a, b) => {
+          const timeA = String(a.slot.time || a.slot.baseTime || '');
+          const timeB = String(b.slot.time || b.slot.baseTime || '');
+          return a.date.localeCompare(b.date) || timeA.localeCompare(timeB) || a.event.venue.localeCompare(b.event.venue);
+        });
+      }
+
+      function workItemKey(date, eventId, baseTime, slot) {
+        return [date, eventId, baseTime, slot].join('__');
+      }
+
+      function renderWorkBoard(data) {
+        const items = collectWorkItems(data);
+        const auth = data.auth || {};
+        $('authInfo').textContent = auth.agentName
+          ? `${auth.agentName} · ${auth.role} · ${auth.teamName || '팀 미지정'}`
+          : (auth.message || '권한 정보 확인 중');
+        renderWorkFilters(data);
+        const scoped = scopeWorkItems(items, auth);
+        const mineItems = getMineWorkItems(scoped, auth);
+        const approvalItems = scoped.filter((item) => item.status === 'pending');
+        const dbItems = scoped.filter((item) => item.status === 'approved' && item.slot.agent);
+        $('workCountMine').textContent = mineItems.length;
+        $('workCountApproval').textContent = approvalItems.length;
+        $('workCountDb').textContent = dbItems.length;
+        document.querySelectorAll('[data-work-tab]').forEach((button) => {
+          button.classList.toggle('active', button.dataset.workTab === workTab);
+        });
+        const activeItems = workTab === 'approval' ? approvalItems : workTab === 'db' ? dbItems : mineItems;
+        $('workTitle').textContent = workTab === 'approval' ? '승인 대기함' : workTab === 'db' ? 'DB 입력 전용' : '내 일정';
+        $('workBoardRows').innerHTML = activeItems.length
+          ? activeItems.map(renderWorkItem).join('')
+          : '<div class="list-item">표시할 항목이 없습니다.</div>';
+      }
+
+      function renderWorkFilters(data) {
+        const agentSelect = $('workAgentFilter');
+        const teamSelect = $('workTeamFilter');
+        const currentAgent = workFilters.agent;
+        const currentTeam = workFilters.team;
+        const activeAgents = (data.agentRecords || []).filter((record) => record.status !== '업무종료');
+        agentSelect.innerHTML = '<option value="">전체 에이전트</option>' + activeAgents.map((record) => {
+          return `<option value="${escapeHtml(record.name)}">${escapeHtml(record.name)}</option>`;
+        }).join('');
+        teamSelect.innerHTML = '<option value="">전체 팀</option>' + (data.teamGroups || []).map((team) => {
+          return `<option value="${escapeHtml(team.key)}">${escapeHtml(team.name)}</option>`;
+        }).join('');
+        if (currentAgent && activeAgents.some((record) => record.name === currentAgent)) agentSelect.value = currentAgent;
+        if (currentTeam && (data.teamGroups || []).some((team) => team.key === currentTeam)) teamSelect.value = currentTeam;
+      }
+
+      function scopeWorkItems(items, auth) {
+        return items.filter((item) => {
+          if (workFilters.team && item.teamKey !== workFilters.team) return false;
+          if (workFilters.agent && item.slot.agent !== workFilters.agent) return false;
+          if (auth && auth.canIdentify && auth.role === '에이전트') return item.slot.agent === auth.agentName;
+          if (auth && auth.canIdentify && auth.role === '팀리더' && workTab === 'approval') return item.teamKey === auth.teamKey;
+          return true;
+        });
+      }
+
+      function getMineWorkItems(items, auth) {
+        if (auth && auth.agentName) return items.filter((item) => item.slot.agent === auth.agentName);
+        if (workFilters.agent) return items.filter((item) => item.slot.agent === workFilters.agent);
+        return items.filter((item) => item.slot.agent);
+      }
+
+      function renderWorkItem(item) {
+        const slot = item.slot;
+        const time = splitTimeRangeClient(slot.time || slot.baseTime || '');
+        const agent = slot.agent || '미배정';
+        const statusText = item.status === 'approved' ? '승인완료' : item.status === 'pending' ? '승인중' : '선택가능';
+        const dbValue = slot.db || '';
+        let actions = `<span class="status-pill">${statusText}</span>`;
+        if (workTab === 'approval') {
+          actions = '<button class="small edit" type="button" data-work-approve>승인</button><button class="small danger" type="button" data-work-reject>반려</button>';
+        } else if (workTab === 'db') {
+          actions = `<input data-work-db type="number" min="0" value="${escapeHtml(dbValue)}" placeholder="DB"><button class="small edit" type="button" data-work-db-save>저장</button>`;
+        }
+        return `<div class="work-item" data-work-key="${escapeHtml(item.key)}" data-work-date="${escapeHtml(item.date)}" data-work-event-id="${escapeHtml(item.event.id)}" data-work-event-name="${escapeHtml(item.event.venue)}" data-work-base-time="${escapeHtml(slot.baseTime || slot.time)}" data-work-time="${escapeHtml(slot.time || slot.baseTime)}" data-work-slot="${slot.slot}" data-work-agent="${escapeHtml(slot.agent || '')}" data-work-status="${escapeHtml(slot.status || '')}">
+          <div><strong>${escapeHtml(item.event.venue)}</strong><small>${escapeHtml(item.date)} · ${escapeHtml(item.dayName)}</small></div>
+          <div><strong>${escapeHtml(time.start || slot.time || slot.baseTime)} ~ ${escapeHtml(time.end || '')}</strong><small>슬롯 ${slot.slot}</small></div>
+          <div><strong>${escapeHtml(agent)}</strong><small>${escapeHtml(item.teamName)}</small></div>
+          <div class="work-actions">${actions}</div>
+        </div>`;
+      }
+
+      function workPayloadFromNode(node, status) {
+        return {
+          date: node.dataset.workDate,
+          eventId: node.dataset.workEventId,
+          eventName: node.dataset.workEventName,
+          baseTime: node.dataset.workBaseTime,
+          time: node.dataset.workTime || node.dataset.workBaseTime,
+          customTime: node.dataset.workTime || node.dataset.workBaseTime,
+          slot: Number(node.dataset.workSlot),
+          agent: node.dataset.workAgent || '',
+          db: node.querySelector('[data-work-db]') ? node.querySelector('[data-work-db]').value : '',
+          status: status || node.dataset.workStatus || '배정완료'
+        };
+      }
+
+      function updateWorkApproval(node, status) {
+        if (!appsReady() || !state || !node) return;
+        const payload = workPayloadFromNode(node, status);
+        applyAssignmentStatusLocal(payload, status);
+        render(state);
+        setStatus(status === '반려' ? '반려되었습니다.' : '승인완료로 변경했습니다.');
+        google.script.run
+          .withSuccessHandler(() => setStatus(status === '반려' ? '반려되었습니다.' : '승인완료로 변경했습니다.'))
+          .withFailureHandler((err) => {
+            setStatus(err && err.message ? err.message : String(err), true);
+            load(state.month);
+          })
+          .updateAssignmentStatus({ date: payload.date, eventId: payload.eventId, baseTime: payload.baseTime, slot: payload.slot, status });
+      }
+
+      function saveWorkDb(node) {
+        if (!appsReady() || !state || !node) return;
+        const payload = workPayloadFromNode(node, node.dataset.workStatus || '배정완료');
+        applySlotPayloadLocal(payload);
+        render(state);
+        setStatus('DB를 저장했습니다.');
+        google.script.run
+          .withSuccessHandler(() => setStatus('DB를 저장했습니다.'))
+          .withFailureHandler((err) => {
+            setStatus(err && err.message ? err.message : String(err), true);
+            load(state.month);
+          })
+          .saveCalendarAssignment(payload);
+      }
+
+      function renderAgents(data) {
+        const groups = data.teamGroups || [];
+        renderAgentTeamOptions(groups);
+        renderAgentStatusTabs(data.agentRecords || []);
+        $('teamCards').innerHTML = groups.map((team) => {
+          const members = team.members || (team.agents || []).map((agent) => ({ name: agent, status: '근무중', role: '에이전트' }));
+          const chips = members.map((member) => {
+            const ended = member.status === '업무종료' ? ' ended' : '';
+            const leaderClass = member.role === '팀리더' ? ' team-leader' : '';
+            const role = member.role === '팀리더' ? ' TL' : '';
+            const style = member.role === '팀리더' ? '' : ` style="background:${escapeHtml(team.color)}"`;
+            return `<button class="agent-chip${leaderClass}${ended}" type="button" data-edit-agent="${escapeHtml(member.name)}"${style}>${escapeHtml(member.name)}${role}</button>`;
+          }).join('');
+          const activeCount = members.filter((member) => member.status !== '업무종료').length;
+          return `<div class="team-card">
+            <div class="team-head">
+              <div><strong>${escapeHtml(team.name)}</strong><small>팀리더: ${escapeHtml(team.leader)}</small></div>
+              <div class="team-count" style="background:${escapeHtml(team.color)}">${activeCount}명</div>
+            </div>
+            <div class="agent-chip-wrap">${chips}</div>
+            <div class="action-row" style="padding:0 12px 12px;">
+              <button class="small edit" type="button" data-edit-team="${escapeHtml(team.key)}">팀 수정</button>
+              <button class="small danger" type="button" data-delete-team="${escapeHtml(team.key)}">팀 삭제</button>
+            </div>
+          </div>`;
+        }).join('');
+
+        const teamLookup = {};
+        groups.forEach((team) => {
+          (team.members || []).forEach((member) => {
+            teamLookup[member.name] = team;
+          });
+        });
+        const filteredRecords = (data.agentRecords || []).filter((record) => {
+          const searchText = [record.name, record.residence, record.phone, record.note].join(' ').toLowerCase();
+          if (agentFilters.search && !searchText.includes(agentFilters.search.toLowerCase())) return false;
+          if (agentFilters.team && record.teamKey !== agentFilters.team) return false;
+          if (agentFilters.role && record.role !== agentFilters.role) return false;
+          if (agentFilters.status && record.status !== agentFilters.status) return false;
+          return true;
+        });
+
+        $('agentRows').innerHTML = filteredRecords.length ? filteredRecords
+          .map((record, index) => {
+            const team = teamLookup[record.name] || {};
+            const teamName = record.teamName || team.name || '미지정';
+            const statusClass = record.status === '업무종료' ? ' ended' : '';
+            const roleClass = record.role === '팀리더' ? ' leader' : '';
+            return `<tr>
+              <td>${index + 1}</td>
+              <td>${escapeHtml(teamName)}</td>
+              <td><span class="role-pill${roleClass}">${escapeHtml(record.role || '에이전트')}</span></td>
+              <td>${escapeHtml(record.name)}</td>
+              <td>${escapeHtml(record.workStart || '-')}</td>
+              <td>${escapeHtml(record.workEnd || '-')}</td>
+              <td><span class="status-pill${statusClass}">${escapeHtml(record.status || '근무중')}</span></td>
+              <td>${escapeHtml(record.residence || '-')}</td>
+              <td>${escapeHtml(record.phone || '-')}</td>
+              <td>${escapeHtml(record.email || '-')}</td>
+              <td><div class="action-row"><button class="small edit" type="button" data-edit-agent="${escapeHtml(record.name)}">수정</button><button class="small secondary" type="button" data-end-agent="${escapeHtml(record.name)}">종료일 입력</button><button class="small danger" type="button" data-delete-agent="${escapeHtml(record.name)}">삭제</button></div></td>
+            </tr>`;
+          }).join('') : '<tr><td colspan="11">등록된 인력이 없습니다.</td></tr>';
+      }
+
+      function renderAgentStatusTabs(records) {
+        const all = records.length;
+        const ended = records.filter((record) => record.status === '업무종료').length;
+        const working = all - ended;
+        $('agentCountAll').textContent = all;
+        $('agentCountWorking').textContent = working;
+        $('agentCountEnded').textContent = ended;
+        document.querySelectorAll('[data-agent-status]').forEach((button) => {
+          button.classList.toggle('active', button.dataset.agentStatus === agentFilters.status);
+        });
+      }
+
+      function renderAgentTeamOptions(groups) {
+        const options = groups.map((team) => {
+          return `<option value="${escapeHtml(team.key)}">${escapeHtml(team.name)}</option>`;
+        }).join('');
+        ['agentTeamSelect', 'leaderTeamSelect'].forEach((id) => {
+          const select = $(id);
+          const current = select.value;
+          select.innerHTML = options;
+          if (current && groups.some((team) => team.key === current)) select.value = current;
+        });
+
+        const filter = $('agentTeamFilter');
+        const filterCurrent = filter.value;
+        filter.innerHTML = '<option value="">전체 팀</option>' + groups.map((team) => {
+          return `<option value="${escapeHtml(team.key)}">${escapeHtml(team.name)}</option>`;
+        }).join('');
+        if (filterCurrent && groups.some((team) => team.key === filterCurrent)) filter.value = filterCurrent;
+      }
+
+      function renderRanks(rows) {
+        $('rankRows').innerHTML = rows.length ? rows.map((row, index) => {
+          return `<tr><td>${index + 1}</td><td>${escapeHtml(row.agent)}</td><td>${row.db}</td></tr>`;
+        }).join('') : '<tr><td colspan="3">DB 입력 후 표시됩니다.</td></tr>';
+      }
+
+      function renderCalendar(data) {
+        renderCalendarModeControls(data);
+        if (calendarMode !== 'event') {
+          renderAssignmentCalendar(data);
+          return;
+        }
+        const grouped = groupClaimSlots(data);
+        renderClaimCounts(grouped.allSlots);
+        document.querySelectorAll('[data-claim-filter]').forEach((button) => {
+          button.classList.toggle('active', button.dataset.claimFilter === claimFilter);
+        });
+        if (!grouped.firstEventKey) {
+          $('calendar').innerHTML = '<div class="empty-board">표시할 이벤트가 없습니다.</div>';
+          activeClaimSelection = '';
+          return;
+        }
+        if (activeClaimSelection && !grouped.eventMap[activeClaimSelection]) activeClaimSelection = '';
+        const weekdayHeads = weekdays.map((label, index) => {
+          const cls = index === 5 ? ' saturday-head' : index === 6 ? ' sunday-head' : '';
+          return `<div class="event-weekday${cls}">${escapeHtml(label)}</div>`;
+        }).join('');
+        const dayCells = (data.weeks || []).map((week) => {
+          return week.map((day) => renderCalendarCell(day, grouped.dayMap)).join('');
+        }).join('');
+        $('calendar').innerHTML = `<div class="event-month-grid">${weekdayHeads}${dayCells}</div><div id="claimModal" class="claim-modal"><aside id="claimDetail" class="claim-detail"></aside></div>`;
+        renderClaimDetail(grouped);
+      }
+
+      function renderCalendarModeControls(data) {
+        document.querySelectorAll('[data-calendar-mode]').forEach((button) => {
+          button.classList.toggle('active', button.dataset.calendarMode === calendarMode);
+        });
+        const ownerSelect = $('calendarOwnerFilter');
+        const previous = calendarOwnerFilter;
+        if (calendarMode === 'event') {
+          ownerSelect.style.display = 'none';
+          $('claimStatusTabs').style.display = 'flex';
+          return;
+        }
+        $('claimStatusTabs').style.display = 'none';
+        ownerSelect.style.display = '';
+        if (calendarMode === 'team') {
+          ownerSelect.innerHTML = '<option value="">전체 팀</option>' + (data.teamGroups || []).map((team) => {
+            return `<option value="${escapeHtml(team.key)}">${escapeHtml(team.name)}</option>`;
+          }).join('');
+        } else {
+          const records = (data.agentRecords || []).filter((record) => record.status !== '업무종료');
+          ownerSelect.innerHTML = '<option value="">전체 에이전트</option>' + records.map((record) => {
+            return `<option value="${escapeHtml(record.name)}">${escapeHtml(record.name)}</option>`;
+          }).join('');
+        }
+        if (previous && Array.from(ownerSelect.options).some((option) => option.value === previous)) {
+          ownerSelect.value = previous;
+        } else {
+          calendarOwnerFilter = '';
+          ownerSelect.value = '';
+        }
+      }
+
+      function renderAssignmentCalendar(data) {
+        const assignmentMap = buildAssignmentDayMap(data);
+        const weekdayHeads = weekdays.map((label, index) => {
+          const cls = index === 5 ? ' saturday-head' : index === 6 ? ' sunday-head' : '';
+          return `<div class="event-weekday${cls}">${escapeHtml(label)}</div>`;
+        }).join('');
+        const dayCells = (data.weeks || []).map((week) => {
+          return week.map((day) => renderAssignmentCalendarCell(day, assignmentMap)).join('');
+        }).join('');
+        $('calendar').innerHTML = `<div class="event-month-grid">${weekdayHeads}${dayCells}</div>`;
+      }
+
+      function buildAssignmentDayMap(data) {
+        const dayMap = {};
+        (data.weeks || []).forEach((week) => {
+          week.forEach((day) => {
+            if (!day) return;
+            (day.events || []).forEach((event) => {
+              (event.slots || []).forEach((slot) => {
+                if (!slot.agent) return;
+                const found = findAgent(slot.agent);
+                const teamKey = found && found.team ? found.team.key : '';
+                if (calendarMode === 'team' && calendarOwnerFilter && teamKey !== calendarOwnerFilter) return;
+                if (calendarMode === 'agent' && calendarOwnerFilter && slot.agent !== calendarOwnerFilter) return;
+                if (!dayMap[day.date]) dayMap[day.date] = { day, items: [] };
+                dayMap[day.date].items.push({ day, event, slot, teamKey, teamName: found && found.team ? found.team.name : '미지정' });
+              });
+            });
+          });
+        });
+        Object.values(dayMap).forEach((group) => {
+          group.items.sort((a, b) => String(a.slot.time || '').localeCompare(String(b.slot.time || '')));
+        });
+        return dayMap;
+      }
+
+      function renderAssignmentCalendarCell(day, assignmentMap) {
+        if (!day) return '<div class="event-day-cell empty"></div>';
+        const dayClass = day.weekday === 6 ? ' saturday' : day.weekday === 0 ? ' sunday' : '';
+        const dayName = weekdays[(day.weekday + 6) % 7] || '';
+        const group = assignmentMap[day.date];
+        const items = group ? group.items.map(renderAssignmentChip).join('') : '';
+        return `<div class="event-day-cell${dayClass}">
+          <div class="event-day-num"><strong>${escapeHtml(day.day)}</strong><span>${escapeHtml(dayName)}</span></div>
+          <div class="event-chip-list">${items || '<span class="muted-mini">배정된 일정 없음</span>'}</div>
+        </div>`;
+      }
+
+      function renderAssignmentChip(item) {
+        const cls = teamClass(item.slot.agent);
+        const status = item.slot.status === '배정완료' ? '승인완료' : '승인중';
+        const db = item.slot.db ? `DB ${item.slot.db}` : 'DB -';
+        return `<div class="assignment-chip ${cls}">
+          <strong>${escapeHtml(item.event.venue)}</strong>
+          <span>${escapeHtml(item.slot.time || item.slot.baseTime || '')} · ${escapeHtml(status)} · ${escapeHtml(db)}</span>
+          <small>${escapeHtml(item.slot.agent)} · ${escapeHtml(item.teamName)}</small>
+        </div>`;
+      }
+
+      function groupClaimSlots(data) {
+        const allSlots = [];
+        const dayMap = {};
+        const eventMap = {};
+        let firstEventKey = '';
+        (data.weeks || []).forEach((week) => {
+          week.forEach((day) => {
+            if (!day) return;
+            (day.events || []).forEach((event) => {
+              const eventSlots = [];
+              let hasVisibleSlot = false;
+              (event.slots || []).forEach((slot) => {
+                const item = { day, event, slot, status: claimSlotStatus(day, slot) };
+                allSlots.push(item);
+                eventSlots.push(item);
+                if (isVisibleClaimSlot(item)) hasVisibleSlot = true;
+              });
+              if (!hasVisibleSlot) return;
+              const key = claimEventKey(day.date, event.id);
+              if (!firstEventKey) firstEventKey = key;
+              if (!dayMap[day.date]) dayMap[day.date] = { day, events: [] };
+              const eventGroup = { key, day, event, slots: eventSlots };
+              dayMap[day.date].events.push(eventGroup);
+              eventMap[key] = eventGroup;
+            });
+          });
+        });
+        return { allSlots, dayMap, eventMap, firstEventKey };
+      }
+
+      function isVisibleClaimSlot(item) {
+        if (claimFilter === 'open') return item.status === 'open';
+        if (claimFilter === 'pending') return item.status === 'pending';
+        if (claimFilter === 'approved') return item.status === 'approved';
+        if (claimFilter === 'db') return item.status === 'approved' && item.slot.agent;
+        return true;
+      }
+
+      function renderClaimCounts(slots) {
+        const counts = { open: 0, pending: 0, approved: 0, db: 0 };
+        slots.forEach((item) => {
+          const status = item.status || claimSlotStatus(item.day, item.slot);
+          if (status === 'open') counts.open += 1;
+          if (status === 'pending') counts.pending += 1;
+          if (status === 'approved') {
+            counts.approved += 1;
+            if (item.slot.agent) counts.db += 1;
+          }
+        });
+        $('claimCountOpen').textContent = counts.open;
+        $('claimCountPending').textContent = counts.pending;
+        $('claimCountApproved').textContent = counts.approved;
+        $('claimCountDb').textContent = counts.db;
+      }
+
+      function claimSlotStatus(day, slot) {
+        if (!slot.agent) return 'open';
+        return slot.status === '배정완료' ? 'approved' : 'pending';
+      }
+
+      function claimEventKey(date, eventId) {
+        return `${date}__${eventId}`;
+      }
+
+      function renderCalendarCell(day, dayMap) {
+        if (!day) return '<div class="event-day-cell empty"></div>';
+        const dayGroup = dayMap[day.date];
+        const dayClass = day.weekday === 6 ? ' saturday' : day.weekday === 0 ? ' sunday' : '';
+        const dayName = weekdays[(day.weekday + 6) % 7] || '';
+        const events = dayGroup ? dayGroup.events.map((eventGroup, index) => renderEventChip(eventGroup, index)).join('') : '';
+        return `<div class="event-day-cell${dayClass}">
+          <div class="event-day-num"><strong>${escapeHtml(day.day)}</strong><span>${escapeHtml(dayName)}</span></div>
+          <div class="event-chip-list">${events || '<span class="muted-mini">선택 가능한 이벤트 없음</span>'}</div>
+        </div>`;
+      }
+
+      function renderEventChip(eventGroup, index) {
+        const summary = summarizeSlots(eventGroup.slots);
+        const active = activeClaimSelection === eventGroup.key ? ' active' : '';
+        return `<button class="event-chip color-${index % 4}${active}" type="button" data-claim-detail="${escapeHtml(eventGroup.key)}">
+          <span class="event-chip-name">${escapeHtml(eventGroup.event.venue)}</span>
+          <span class="event-chip-meta">
+            <span class="chip-dot open" title="선택 가능">${summary.open}</span>
+            <span class="chip-dot pending" title="승인중">${summary.pending}</span>
+            <span class="chip-dot approved" title="승인완료">${summary.approved}</span>
+          </span>
+        </button>`;
+      }
+
+      function summarizeSlots(slots) {
+        return slots.reduce((acc, item) => {
+          acc[item.status] = (acc[item.status] || 0) + 1;
+          return acc;
+        }, { open: 0, pending: 0, approved: 0 });
+      }
+
+      function renderClaimDetail(grouped) {
+        const target = $('claimDetail');
+        if (!target) return;
+        const modal = $('claimModal');
+        const group = grouped.eventMap[activeClaimSelection];
+        if (!group) {
+          if (modal) modal.classList.remove('open');
+          target.innerHTML = '';
+          return;
+        }
+        if (modal) modal.classList.add('open');
+        const dayName = weekdays[(group.day.weekday + 6) % 7] || '';
+        const slots = group.slots.map((item) => renderSlot(group.day.date, group.event, item.slot, item.status)).join('');
+        target.innerHTML = `<div class="claim-detail-head">
+          <div class="claim-detail-title">
+            <strong>${escapeHtml(group.event.venue)}</strong>
+            <span>${escapeHtml(group.day.date)} · ${escapeHtml(dayName)} · ${group.slots.length}개 슬롯</span>
+          </div>
+          <button class="claim-close" type="button" data-close-claim-detail aria-label="닫기">×</button>
+        </div>
+        <div class="claim-detail-body">
+          <div class="claim-card"><div class="claim-event-name">${escapeHtml(group.event.venue)}</div>${slots}</div>
+        </div>`;
+      }
+
+      function renderSlot(date, event, slot, status) {
+        const cls = teamClass(slot.agent);
+        const timeParts = splitTimeRangeClient(slot.time);
+        const preferredAgent = selectedSidebarAgent && !slot.agent ? selectedSidebarAgent : '';
+        const agentOptions = ['선택'].concat(state.agents || []).map((agent) => {
+          const value = agent === '선택' ? '' : agent;
+          const selected = value === (slot.agent || preferredAgent || '') ? 'selected' : '';
+          return `<option value="${escapeHtml(value)}" ${selected}>${escapeHtml(agent)}</option>`;
+        }).join('');
+        const normalizedStatus = status || (slot.agent ? (slot.status === '배정완료' ? 'approved' : 'pending') : 'open');
+        const actionHtml = claimActionHtml(normalizedStatus);
+        return `<div class="claim-slot ${cls}" data-date="${date}" data-event-id="${escapeHtml(event.id)}" data-event-name="${escapeHtml(event.venue)}" data-base-time="${escapeHtml(slot.baseTime || slot.time)}" data-time="${escapeHtml(slot.time)}" data-slot="${slot.slot}" data-status="${escapeHtml(slot.status || '')}">
+          <div class="time"><select class="slot-start">${timeOptionsHtml(timeParts.start)}</select></div>
+          <div class="time"><select class="slot-end">${timeOptionsHtml(timeParts.end)}</select></div>
+          <div class="agent"><select>${agentOptions}</select></div>
+          <div class="db"><input type="number" min="0" value="${escapeHtml(slot.db || '')}" placeholder="DB" title="DB"></div>
+          <div class="slot-actions">${actionHtml}</div>
+        </div>`;
+      }
+
+      function claimActionHtml(status) {
+        if (status === 'open') return '<button class="claim-action secondary" type="button" data-claim-slot>선점</button>';
+        if (status === 'pending') {
+          return '<span class="claim-status">승인중</span><button class="claim-action edit" type="button" data-approve-slot>승인</button><button class="claim-action danger" type="button" data-reject-slot>반려</button>';
+        }
+        return '<span class="claim-status done">승인완료</span>';
+      }
+
+      function teamClass(agent) {
+        if (!state || !agent) return '';
+        return state.agentTeams && state.agentTeams[agent] ? state.agentTeams[agent] : '';
+      }
+
+      function buildTimeOptions() {
+        const rows = [];
+        for (let hour = 9; hour <= 21; hour += 1) {
+          ['00', '30'].forEach((minute) => {
+            rows.push(`${String(hour).padStart(2, '0')}:${minute}`);
+          });
+        }
+        rows.push('22:00');
+        return rows;
+      }
+
+      function timeOptionsHtml(selectedValue) {
+        const selected = normalizeTimePointClient(selectedValue);
+        const options = TIME_OPTIONS.includes(selected) ? TIME_OPTIONS : [selected].concat(TIME_OPTIONS).filter(Boolean);
+        return options.map((time) => {
+          const selectedAttr = time === selected ? 'selected' : '';
+          return `<option value="${escapeHtml(time)}" ${selectedAttr}>${escapeHtml(time)}</option>`;
+        }).join('');
+      }
+
+      function populateTimeSelects() {
+        document.querySelectorAll('[data-time-select]').forEach((select) => {
+          const defaultValue = select.dataset.default || select.value || '';
+          select.innerHTML = timeOptionsHtml(defaultValue);
+          select.value = normalizeTimePointClient(defaultValue);
+        });
+      }
+
+      function findStateSlot(payload) {
+        let found = null;
+        (state.weeks || []).forEach((week) => {
+          week.forEach((day) => {
+            if (!day || day.date !== payload.date) return;
+            (day.events || []).forEach((event) => {
+              if (String(event.id) !== String(payload.eventId)) return;
+              (event.slots || []).forEach((slot) => {
+                const slotBase = slot.baseTime || slot.time;
+                if (Number(slot.slot) === Number(payload.slot) && String(slotBase) === String(payload.baseTime)) found = slot;
+              });
+            });
+          });
+        });
+        return found;
+      }
+
+      function applySlotPayloadLocal(payload) {
+        const slot = findStateSlot(payload);
+        if (!slot) return;
+        slot.time = payload.time || payload.baseTime;
+        slot.customTime = payload.customTime || '';
+        slot.agent = payload.agent || '';
+        slot.db = payload.db || '';
+        slot.status = payload.status || '';
+        recalculateLocalStats();
+      }
+
+      function applyAssignmentStatusLocal(payload, status) {
+        const slot = findStateSlot(payload);
+        if (!slot) return;
+        if (status === '반려') {
+          slot.agent = '';
+          slot.db = '';
+          slot.status = '';
+        } else {
+          slot.status = status;
+        }
+        recalculateLocalStats();
+      }
+
+      function recalculateLocalStats() {
+        const stats = Object.assign({}, state.stats || {});
+        const unassigned = [];
+        const dbMissing = [];
+        const agentTotals = {};
+        let totalSlots = 0;
+        let assignedSlots = 0;
+        let dbTotal = 0;
+        (state.weeks || []).forEach((week) => {
+          week.forEach((day) => {
+            if (!day) return;
+            (day.events || []).forEach((event) => {
+              (event.slots || []).forEach((slot) => {
+                totalSlots += 1;
+                const time = slot.time || slot.baseTime || '';
+                if (slot.agent) {
+                  assignedSlots += 1;
+                  const db = Number(slot.db || 0);
+                  dbTotal += db;
+                  agentTotals[slot.agent] = (agentTotals[slot.agent] || 0) + db;
+                  if (!slot.db) dbMissing.push({ agent: slot.agent, date: day.date, eventName: event.venue, time });
+                } else {
+                  unassigned.push({ date: day.date, eventName: event.venue, time, slot: slot.slot });
+                }
+              });
+            });
+          });
+        });
+        stats.totalSlots = totalSlots;
+        stats.assignedSlots = assignedSlots;
+        stats.unassignedSlots = unassigned.length;
+        stats.assignedRate = totalSlots ? Math.round((assignedSlots / totalSlots) * 100) : 0;
+        stats.dbTotal = dbTotal;
+        stats.unassigned = unassigned;
+        stats.dbMissing = dbMissing;
+        stats.topAgents = Object.keys(agentTotals).map((agent) => ({ agent, db: agentTotals[agent] })).sort((a, b) => b.db - a.db);
+        state.stats = stats;
+      }
+
+      function saveSlot(slotNode, successMessage, nextFilter) {
+        if (!appsReady() || !state) return;
+        const customTime = joinTimeRangeClient(slotNode.querySelector('.slot-start').value, slotNode.querySelector('.slot-end').value);
+        const baseTime = slotNode.dataset.baseTime || slotNode.dataset.time;
+        const agent = slotNode.querySelector('.agent select').value;
+        const payload = {
+          date: slotNode.dataset.date,
+          eventId: slotNode.dataset.eventId,
+          eventName: slotNode.dataset.eventName,
+          baseTime,
+          time: customTime || baseTime,
+          customTime: customTime || baseTime,
+          slot: Number(slotNode.dataset.slot),
+          agent,
+          db: slotNode.querySelector('.db input').value,
+          status: agent ? (slotNode.dataset.status || '승인대기') : ''
+        };
+        if (nextFilter) claimFilter = nextFilter;
+        applySlotPayloadLocal(payload);
+        render(state);
+        setStatus(successMessage || '저장 중...');
+        google.script.run
+          .withSuccessHandler(() => {
+            setStatus(successMessage || '저장되었습니다.');
+          })
+          .withFailureHandler((err) => {
+            setStatus(err && err.message ? err.message : String(err), true);
+            load(state.month);
+          })
+          .saveCalendarAssignment(payload);
+      }
+
+      function claimSlot(slotNode) {
+        if (!slotNode.querySelector('.agent select').value) {
+          setStatus('선점할 에이전트를 먼저 선택해주세요.', true);
+          return;
+        }
+        slotNode.dataset.status = '승인대기';
+        saveSlot(slotNode, '승인을 요청했습니다.', 'pending');
+      }
+
+      function updateSlotStatus(slotNode, status) {
+        if (!appsReady() || !state) return;
+        const payload = {
+          date: slotNode.dataset.date,
+          eventId: slotNode.dataset.eventId,
+          baseTime: slotNode.dataset.baseTime || slotNode.dataset.time,
+          slot: Number(slotNode.dataset.slot),
+          status
+        };
+        claimFilter = status === '반려' ? 'open' : 'approved';
+        applyAssignmentStatusLocal(payload, status);
+        render(state);
+        setStatus(status === '반려' ? '반려되었습니다.' : '승인완료로 변경했습니다.');
+        google.script.run
+          .withSuccessHandler(() => {
+            setStatus(status === '반려' ? '반려되었습니다.' : '승인완료로 변경했습니다.');
+          })
+          .withFailureHandler((err) => {
+            setStatus(err && err.message ? err.message : String(err), true);
+            load(state.month);
+          })
+          .updateAssignmentStatus(payload);
+      }
+
+      function splitTimeRangeClient(value) {
+        const text = String(value || '').replace(/\s+/g, '');
+        const parts = text.split(/[~-]/);
+        return { start: parts[0] || '', end: parts[1] || '' };
+      }
+
+      function normalizeTimePointClient(value) {
+        const text = String(value || '').trim();
+        const match = text.match(/^(\d{1,2})[:.](\d{2})$/);
+        if (!match) return text;
+        return `${String(match[1]).padStart(2, '0')}:${match[2]}`;
+      }
+
+      function joinTimeRangeClient(start, end) {
+        const startText = normalizeTimePointClient(start);
+        const endText = normalizeTimePointClient(end);
+        return startText && endText ? `${startText}~${endText}` : '';
+      }
+
+      function parseDateListClient(value) {
+        return String(value || '')
+          .split(/[\s,]+/)
+          .map((item) => item.trim())
+          .filter(Boolean)
+          .sort();
+      }
+
+      function datesFromRangeClient(startDate, endDate) {
+        const start = new Date(`${startDate}T00:00:00`);
+        const end = new Date(`${endDate}T00:00:00`);
+        if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return [];
+        const rows = [];
+        const current = new Date(start);
+        while (current <= end) {
+          rows.push(formatDateClient(current));
+          current.setDate(current.getDate() + 1);
+        }
+        return rows;
+      }
+
+      function formatDateClient(date) {
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+      }
+
+      function isFullRangeDateList(event) {
+        if (!String(event.dateList || '').trim()) return true;
+        const listed = parseDateListClient(event.dateList);
+        const full = datesFromRangeClient(event.startDate || event.firstDate, event.endDate || event.lastDate);
+        return listed.length === full.length && listed.every((date, index) => date === full[index]);
+      }
+
+      function syncDateSelectionToField() {
+        const form = $('eventForm');
+        const dates = Array.from(eventDateSelection).sort();
+        form.dateList.value = dates.join(',');
+        $('dateSelectedSummary').textContent = dates.length
+          ? `${dates.length}일 선택: ${dates.join(', ')}`
+          : '선택된 날짜가 없습니다.';
+      }
+
+      function setDateSelectionFromText(value) {
+        eventDateSelection = new Set(parseDateListClient(value));
+        syncDateSelectionToField();
+      }
+
+      function dateFromKeyClient(key) {
+        const date = new Date(`${key}T00:00:00`);
+        return Number.isNaN(date.getTime()) ? null : date;
+      }
+
+      function getDatePickerBaseMonth() {
+        const form = $('eventForm');
+        const firstSelected = Array.from(eventDateSelection).sort()[0];
+        const anchor = form.startDate.value || firstSelected || $('month').value + '-01' || formatDateClient(new Date());
+        const date = dateFromKeyClient(anchor) || new Date();
+        return new Date(date.getFullYear(), date.getMonth(), 1);
+      }
+
+      function renderEventDatePicker() {
+        const panel = $('datePickerPanel');
+        if (!panel.classList.contains('active')) return;
+        if (!eventDatePickerMonth) eventDatePickerMonth = getDatePickerBaseMonth();
+        const year = eventDatePickerMonth.getFullYear();
+        const month = eventDatePickerMonth.getMonth();
+        $('datePickerLabel').textContent = `${year}년 ${String(month + 1).padStart(2, '0')}월`;
+        const grid = $('datePickerGrid');
+        const first = new Date(year, month, 1);
+        const offset = (first.getDay() + 6) % 7;
+        const start = new Date(year, month, 1 - offset);
+        const todayKey = formatDateClient(new Date());
+        const cells = [];
+        for (let index = 0; index < 42; index += 1) {
+          const date = new Date(start);
+          date.setDate(start.getDate() + index);
+          const key = formatDateClient(date);
+          const outside = date.getMonth() !== month ? ' outside' : '';
+          const selected = eventDateSelection.has(key) ? ' selected' : '';
+          const today = key === todayKey ? ' today' : '';
+          cells.push(`<button class="date-day${outside}${selected}${today}" type="button" data-date-pick="${key}">${date.getDate()}</button>`);
+        }
+        grid.innerHTML = cells.join('');
+        syncDateSelectionToField();
+      }
+
+      function shiftDatePickerMonth(delta) {
+        if (!eventDatePickerMonth) eventDatePickerMonth = getDatePickerBaseMonth();
+        eventDatePickerMonth = new Date(eventDatePickerMonth.getFullYear(), eventDatePickerMonth.getMonth() + delta, 1);
+        renderEventDatePicker();
+      }
+
+      function togglePickedDate(dateKey) {
+        if (eventDateSelection.has(dateKey)) eventDateSelection.delete(dateKey);
+        else eventDateSelection.add(dateKey);
+        const dates = Array.from(eventDateSelection).sort();
+        const form = $('eventForm');
+        if (dates.length) {
+          form.startDate.value = dates[0];
+          form.endDate.value = dates[dates.length - 1];
+        }
+        renderEventDatePicker();
+      }
+
+      function clearPickedDates() {
+        eventDateSelection = new Set();
+        syncDateSelectionToField();
+        renderEventDatePicker();
+      }
+
+      function updateShiftVisibility() {
+        const form = $('eventForm');
+        const count = Number(form.shiftCount ? form.shiftCount.value : 2) || 2;
+        document.querySelectorAll('[data-shift-card]').forEach((node) => {
+          const active = Number(node.dataset.shiftCard) <= count;
+          node.classList.toggle('disabled', !active);
+        });
+      }
+
+      function toggleDateMode() {
+        const form = $('eventForm');
+        const isDateMode = form.eventMode.value === 'dates';
+        const panel = $('datePickerPanel');
+        panel.classList.toggle('active', isDateMode);
+        $('dateModeNote').textContent = isDateMode
+          ? '지정일은 아래 달력에서 클릭해서 선택하세요. 선택한 날짜만 행사 달력에 반영됩니다.'
+          : '기간 전체를 선택하면 시작일~종료일 전체가 자동 반영됩니다.';
+        form.dateList.disabled = !isDateMode;
+        if (isDateMode) {
+          eventDatePickerMonth = getDatePickerBaseMonth();
+          renderEventDatePicker();
+        } else {
+          eventDateSelection = new Set();
+          form.dateList.value = '';
+          syncDateSelectionToField();
+        }
+      }
+
+      function submitEventForm(event) {
+        event.preventDefault();
+        if (!appsReady()) {
+          setStatus('배포 URL에서만 저장할 수 있습니다.', true);
+          return;
+        }
+        const data = Object.fromEntries(new FormData(event.currentTarget).entries());
+        data.shiftCount = Math.max(1, Math.min(3, Number(data.shiftCount || 2)));
+        if (!String(data.venue || '').trim()) {
+          setStatus('이벤트명을 입력해주세요.', true);
+          return;
+        }
+        if (data.eventMode === 'period') {
+          if (!data.startDate || !data.endDate) {
+            setStatus('기간 방식에서는 시작일과 종료일을 선택해야 합니다.', true);
+            return;
+          }
+          data.dateList = '';
+        } else {
+          const pickedDates = Array.from(eventDateSelection).sort();
+          if (!pickedDates.length) {
+            setStatus('지정일 방식에서는 달력에서 행사일을 하나 이상 선택해야 합니다.', true);
+            return;
+          }
+          data.dateList = pickedDates.join(',');
+          data.startDate = pickedDates[0];
+          data.endDate = pickedDates[pickedDates.length - 1];
+        }
+        for (let index = 1; index <= 3; index += 1) {
+          const active = index <= data.shiftCount;
+          if (!active) {
+            data[`time${index}Start`] = '';
+            data[`time${index}End`] = '';
+            data[`people${index}`] = '0';
+            continue;
+          }
+          const start = data[`time${index}Start`];
+          const end = data[`time${index}End`];
+          const people = Number(data[`people${index}`] || 0);
+          if (!start || !end || people <= 0) {
+            setStatus(`${index}부 시작/종료 시간과 인원을 입력해주세요.`, true);
+            return;
+          }
+        }
+        setStatus('이벤트를 저장하는 중...');
+        google.script.run
+          .withSuccessHandler(() => {
+            resetEventForm();
+            load($('month').value);
+            switchView('calendarView');
+          })
+          .withFailureHandler((err) => setStatus(err && err.message ? err.message : String(err), true))
+          .saveEventInput(data);
+      }
+
+      function editEvent(eventId) {
+        if (!state) return;
+        const event = (state.events || []).find((item) => item.id === eventId);
+        if (!event) return;
+
+        const form = $('eventForm');
+        form.originalEventId.value = event.id;
+        form.eventId.value = event.id;
+        form.venue.value = event.venue || '';
+        form.startDate.value = event.startDate || event.firstDate || '';
+        form.endDate.value = event.endDate || event.lastDate || '';
+        const usePeriod = isFullRangeDateList(event);
+        form.eventMode.value = usePeriod ? 'period' : 'dates';
+        setDateSelectionFromText(usePeriod ? '' : (event.dateList || ''));
+        const shifts = event.shifts && event.shifts.length ? event.shifts : [{ time: '10:00~14:00', people: 2 }, { time: '14:00~18:00', people: 2 }];
+        form.shiftCount.value = String(Math.max(1, Math.min(3, shifts.length)));
+        for (let index = 1; index <= 3; index += 1) {
+          const fallback = index === 1 ? '10:00~14:00' : index === 2 ? '14:00~18:00' : '18:00~22:00';
+          const shift = shifts[index - 1] || { time: fallback, people: 2 };
+          const parts = splitTimeRangeClient(shift.time || fallback);
+          form[`time${index}Start`].value = normalizeTimePointClient(parts.start);
+          form[`time${index}End`].value = normalizeTimePointClient(parts.end);
+          form[`people${index}`].value = shift.people || 2;
+        }
+        updateShiftVisibility();
+        toggleDateMode();
+        $('eventSubmit').textContent = '이벤트 수정 저장';
+        switchView('eventView');
+        setStatus('이벤트 정보를 수정한 뒤 저장하세요.');
+      }
+
+      function resetEventForm() {
+        const form = $('eventForm');
+        form.reset();
+        form.originalEventId.value = '';
+        form.eventMode.value = 'period';
+        form.shiftCount.value = '2';
+        form.time1Start.value = '10:00';
+        form.time1End.value = '14:00';
+        form.time2Start.value = '14:00';
+        form.time2End.value = '18:00';
+        form.time3Start.value = '18:00';
+        form.time3End.value = '22:00';
+        form.people1.value = 2;
+        form.people2.value = 2;
+        form.people3.value = 2;
+        clearPickedDates();
+        updateShiftVisibility();
+        toggleDateMode();
+        $('eventSubmit').textContent = '이벤트 저장';
+      }
+
+      function submitAgentForm(event) {
+        event.preventDefault();
+        if (!appsReady()) {
+          setStatus('배포 URL에서만 저장할 수 있습니다.', true);
+          return;
+        }
+        const data = Object.fromEntries(new FormData(event.currentTarget).entries());
+        data.role = '에이전트';
+        applyEmploymentDefaults(data);
+        setStatus('에이전트 정보를 저장하는 중...');
+        google.script.run
+          .withSuccessHandler(() => {
+            resetAgentForm();
+            load($('month').value);
+            switchView('agentView');
+          })
+          .withFailureHandler((err) => setStatus(err && err.message ? err.message : String(err), true))
+          .saveAgentInput(data);
+      }
+
+      function submitLeaderForm(event) {
+        event.preventDefault();
+        if (!appsReady()) {
+          setStatus('배포 URL에서만 저장할 수 있습니다.', true);
+          return;
+        }
+        const data = Object.fromEntries(new FormData(event.currentTarget).entries());
+        data.role = '팀리더';
+        applyEmploymentDefaults(data);
+        setStatus('팀리더 정보를 저장하는 중...');
+        google.script.run
+          .withSuccessHandler(() => {
+            resetLeaderForm();
+            load($('month').value);
+            switchView('agentView');
+          })
+          .withFailureHandler((err) => setStatus(err && err.message ? err.message : String(err), true))
+          .saveAgentInput(data);
+      }
+
+      function submitTeamForm(event) {
+        event.preventDefault();
+        if (!appsReady()) {
+          setStatus('배포 URL에서만 저장할 수 있습니다.', true);
+          return;
+        }
+        const data = Object.fromEntries(new FormData(event.currentTarget).entries());
+        setStatus('팀 정보를 저장하는 중...');
+        google.script.run
+          .withSuccessHandler(() => {
+            resetTeamForm();
+            load($('month').value);
+            switchView('agentView');
+          })
+          .withFailureHandler((err) => setStatus(err && err.message ? err.message : String(err), true))
+          .saveTeamInput(data);
+      }
+
+      function editAgent(agentName) {
+        if (!state) return;
+        const found = findAgent(agentName);
+        if (!found) return;
+        const record = found.record;
+        const form = record.role === '팀리더' ? $('leaderForm') : $('agentForm');
+        form.originalAgentName.value = record.name;
+        form.teamKey.value = found.team.key;
+        form.agentName.value = record.name;
+        form.workStart.value = record.workStart || '';
+        form.residence.value = record.residence || '';
+        form.phone.value = record.phone || '';
+        form.email.value = record.email || '';
+        form.note.value = record.note || '';
+        if (record.role === '팀리더') $('leaderSubmit').textContent = '팀리더 수정 저장';
+        else $('agentSubmit').textContent = '에이전트 수정 저장';
+        switchView('agentView');
+        setStatus('인력 정보를 수정한 뒤 저장하세요.');
+      }
+
+      function deleteAgent(agentName) {
+        if (!appsReady()) {
+          setStatus('배포 URL에서만 수정할 수 있습니다.', true);
+          return;
+        }
+        if (!confirm(`${agentName} 정보를 완전히 삭제할까요? 기존 배정 기록은 유지됩니다.`)) return;
+        setStatus('인력 정보를 삭제하는 중...');
+        google.script.run
+          .withSuccessHandler(() => {
+            load($('month').value);
+            switchView('agentView');
+          })
+          .withFailureHandler((err) => setStatus(err && err.message ? err.message : String(err), true))
+          .deleteAgentInput(agentName);
+      }
+
+      function endAgentWork(agentName) {
+        if (!appsReady()) {
+          setStatus('배포 URL에서만 수정할 수 있습니다.', true);
+          return;
+        }
+        const defaultDate = state && state.today ? state.today : new Date().toISOString().slice(0, 10);
+        const workEndDate = prompt(`${agentName} 업무 종료일을 입력해주세요.`, defaultDate);
+        if (workEndDate === null) return;
+        if (!workEndDate.trim()) {
+          setStatus('업무 종료일을 입력해야 합니다.', true);
+          return;
+        }
+        if (!confirm(`${agentName} 업무를 ${workEndDate} 종료 처리할까요? 달력 선택 목록에서 제외됩니다.`)) return;
+        setStatus('업무 종료 처리하는 중...');
+        google.script.run
+          .withSuccessHandler(() => {
+            load($('month').value);
+            switchView('agentView');
+          })
+          .withFailureHandler((err) => setStatus(err && err.message ? err.message : String(err), true))
+          .endAgentWorkInput(agentName, workEndDate);
+      }
+
+      function resetAgentForm() {
+        const form = $('agentForm');
+        form.reset();
+        form.originalAgentName.value = '';
+        $('agentSubmit').textContent = '에이전트 저장';
+      }
+
+      function resetLeaderForm() {
+        const form = $('leaderForm');
+        form.reset();
+        form.originalAgentName.value = '';
+        $('leaderSubmit').textContent = '팀리더 저장';
+      }
+
+      function applyEmploymentDefaults(data) {
+        const original = String(data.originalAgentName || '').trim();
+        const record = original && state ? (state.agentRecords || []).find((item) => item.name === original) : null;
+        data.status = record ? (record.status || '근무중') : '근무중';
+        data.workEnd = record ? (record.workEnd || '') : '';
+      }
+
+      function resetTeamForm() {
+        const form = $('teamForm');
+        form.reset();
+        form.originalTeamKey.value = '';
+        form.teamKey.value = '';
+        form.status.value = '운영중';
+        $('teamSubmit').textContent = '팀 저장';
+      }
+
+      function editTeam(teamKey) {
+        if (!state) return;
+        const team = (state.teamGroups || []).find((item) => item.key === teamKey);
+        if (!team) return;
+        const form = $('teamForm');
+        form.originalTeamKey.value = team.key;
+        form.teamKey.value = team.key;
+        form.teamName.value = team.name || '';
+        form.teamLeader.value = team.leader || '';
+        form.status.value = team.status || '운영중';
+        form.note.value = team.note || '';
+        $('teamSubmit').textContent = '팀 수정 저장';
+        switchView('agentView');
+        setStatus('팀 정보를 수정한 뒤 저장하세요.');
+      }
+
+      function deleteTeam(teamKey) {
+        if (!appsReady()) {
+          setStatus('배포 URL에서만 수정할 수 있습니다.', true);
+          return;
+        }
+        if (!confirm('이 팀을 삭제할까요? 소속 인력은 미지정 상태로 남습니다.')) return;
+        setStatus('팀을 삭제하는 중...');
+        google.script.run
+          .withSuccessHandler(() => {
+            load($('month').value);
+            switchView('agentView');
+          })
+          .withFailureHandler((err) => setStatus(err && err.message ? err.message : String(err), true))
+          .deleteTeamInput(teamKey);
+      }
+
+      function findAgent(agentName) {
+        const name = String(agentName || '').trim();
+        const directRecord = (state.agentRecords || []).find((record) => record.name === name);
+        if (directRecord) {
+          const directTeam = (state.teamGroups || []).find((team) => team.key === directRecord.teamKey) || {
+            key: directRecord.teamKey,
+            name: directRecord.teamName || '미지정',
+            leader: directRecord.teamLeader || ''
+          };
+          return { record: directRecord, team: directTeam };
+        }
+        for (const team of (state.teamGroups || [])) {
+          const record = (team.members || []).find((member) => member.name === name);
+          if (record) return { record, team };
+        }
+        return null;
+      }
+
+      function deleteEvent(eventId) {
+        if (!appsReady()) {
+          setStatus('배포 URL에서만 삭제할 수 있습니다.', true);
+          return;
+        }
+        if (!confirm('이 이벤트와 연결된 에이전트 배치 기록을 삭제할까요?')) return;
+        setStatus('이벤트를 삭제하는 중...');
+        google.script.run
+          .withSuccessHandler(() => load($('month').value))
+          .withFailureHandler((err) => setStatus(err && err.message ? err.message : String(err), true))
+          .deleteEventInput(eventId);
+      }
+
+      function syncSheetFromWeb() {
+        if (!appsReady()) {
+          setStatus('배포 URL에서만 동기화할 수 있습니다.', true);
+          return;
+        }
+        setSyncButtonsDisabled(true);
+        setStatus('자동화 통합 시트로 동기화하는 중...');
+        google.script.run
+          .withSuccessHandler((result) => {
+            setSyncButtonsDisabled(false);
+            $('syncInfo').textContent = `${result.sheetName} · ${result.rowCount}개 슬롯 동기화 완료`;
+            setStatus(result.message || '자동화 통합 시트를 동기화했습니다.');
+          })
+          .withFailureHandler((err) => {
+            setSyncButtonsDisabled(false);
+            setStatus(err && err.message ? err.message : String(err), true);
+          })
+          .syncAutomationSheet($('month').value);
+      }
+
+      function importEventsSheet() {
+        runSheetAction('이벤트를 행사_업로드 시트에서 불러오는 중...', 'importEventsFromSheet', '행사_업로드 시트의 운영중 이벤트를 웹앱 달력 기준으로 불러올까요?');
+      }
+
+      function importAgentsSheet() {
+        runSheetAction('에이전트관리 시트에서 인력을 불러오는 중...', 'importAgentsFromSheet', '에이전트관리 시트 내용으로 웹앱 에이전트 기준표를 갱신할까요?');
+      }
+
+      function importTeamsSheet() {
+        runSheetAction('팀관리 시트에서 팀 정보를 불러오는 중...', 'importTeamsFromSheet', '팀관리 시트 내용으로 웹앱 팀 기준표를 갱신할까요?');
+      }
+
+      function migrateSheetData() {
+        runSheetAction('마이그레이션 백업과 기준표 점검을 진행하는 중...', 'runAutomationMigration', '현재 시트 내용을 백업한 뒤 이벤트/팀/에이전트 기준표를 다시 맞출까요?');
+      }
+
+      function runSheetAction(statusText, serverFunction, confirmText) {
+        if (!appsReady()) {
+          setStatus('배포 URL에서만 동기화할 수 있습니다.', true);
+          return;
+        }
+        if (confirmText && !confirm(confirmText)) return;
+        setSyncButtonsDisabled(true);
+        setStatus(statusText);
+        const runner = google.script.run
+          .withSuccessHandler((result) => {
+            setSyncButtonsDisabled(false);
+            $('syncInfo').textContent = result && result.message ? result.message : '동기화 완료';
+            setStatus(result && result.message ? result.message : '동기화했습니다.');
+            load($('month').value);
+          })
+          .withFailureHandler((err) => {
+            setSyncButtonsDisabled(false);
+            setStatus(err && err.message ? err.message : String(err), true);
+          });
+        runner[serverFunction]($('month').value);
+      }
+
+      function importSheetToWeb() {
+        if (!appsReady()) {
+          setStatus('배포 URL에서만 가져올 수 있습니다.', true);
+          return;
+        }
+        if (!confirm('자동_통합동기화 시트의 Agent, DB, Status, 시간 값을 웹앱 배정 데이터로 가져올까요?')) return;
+        setSyncButtonsDisabled(true);
+        setStatus('자동화 통합 시트에서 배정 데이터를 가져오는 중...');
+        google.script.run
+          .withSuccessHandler((result) => {
+            setSyncButtonsDisabled(false);
+            setStatus(result.message || '시트에서 가져왔습니다.');
+            load($('month').value);
+          })
+          .withFailureHandler((err) => {
+            setSyncButtonsDisabled(false);
+            setStatus(err && err.message ? err.message : String(err), true);
+          })
+          .importAutomationSheet($('month').value);
+      }
+
+      function downloadAutomation(format) {
+        if (!appsReady()) {
+          setStatus('배포 URL에서만 다운로드할 수 있습니다.', true);
+          return;
+        }
+        setSyncButtonsDisabled(true);
+        setStatus('다운로드 파일을 준비하는 중...');
+        google.script.run
+          .withSuccessHandler((result) => {
+            setSyncButtonsDisabled(false);
+            triggerDownload(result.filename, result.content, result.mimeType);
+            setStatus(`${result.filename} 다운로드를 준비했습니다.`);
+          })
+          .withFailureHandler((err) => {
+            setSyncButtonsDisabled(false);
+            setStatus(err && err.message ? err.message : String(err), true);
+          })
+          .getAutomationDownload($('month').value, format);
+      }
+
+      function triggerDownload(filename, content, mimeType) {
+        const blob = new Blob([content || ''], { type: mimeType || 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename || 'download.csv';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function setSyncButtonsDisabled(disabled) {
+        ['importEventsSheet', 'importAgentsSheet', 'importTeamsSheet', 'syncSheet', 'importSheet', 'migrateSheet', 'downloadCsv', 'downloadJson'].forEach((id) => {
+          const node = $(id);
+          if (node) node.disabled = disabled;
+        });
+      }
+
+      function escapeHtml(value) {
+        return String(value == null ? '' : value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      document.querySelectorAll('.tab').forEach((tab) => {
+        tab.addEventListener('click', () => switchView(tab.dataset.view));
+      });
+      document.querySelectorAll('[data-view-jump]').forEach((button) => {
+        button.addEventListener('click', () => switchView(button.dataset.viewJump));
+      });
+      document.querySelectorAll('[data-event-filter]').forEach((button) => {
+        button.addEventListener('click', () => {
+          eventFilter = button.dataset.eventFilter;
+          if (state) renderEvents(state.events || []);
+        });
+      });
+      document.querySelectorAll('[data-claim-filter]').forEach((button) => {
+        button.addEventListener('click', () => {
+          claimFilter = button.dataset.claimFilter;
+          if (state) renderCalendar(state);
+        });
+      });
+      document.querySelectorAll('[data-calendar-mode]').forEach((button) => {
+        button.addEventListener('click', () => {
+          calendarMode = button.dataset.calendarMode;
+          calendarOwnerFilter = '';
+          activeClaimSelection = '';
+          if (state) renderCalendar(state);
+        });
+      });
+      document.querySelectorAll('[data-work-tab]').forEach((button) => {
+        button.addEventListener('click', () => {
+          workTab = button.dataset.workTab;
+          if (state) renderWorkBoard(state);
+        });
+      });
+      $('calendarOwnerFilter').addEventListener('change', (event) => {
+        calendarOwnerFilter = event.target.value || '';
+        if (state) renderCalendar(state);
+      });
+      $('workAgentFilter').addEventListener('change', (event) => {
+        workFilters.agent = event.target.value || '';
+        if (state) renderWorkBoard(state);
+      });
+      $('workTeamFilter').addEventListener('change', (event) => {
+        workFilters.team = event.target.value || '';
+        if (state) renderWorkBoard(state);
+      });
+      $('sidebarAgentSelect').addEventListener('change', (event) => {
+        selectedSidebarAgent = event.target.value || '';
+        renderSidebarAgentInfo();
+        if (selectedSidebarAgent) setStatus(`${selectedSidebarAgent}님이 선택되었습니다.`);
+      });
+      $('sidebarWorkButton').addEventListener('click', openSelectedAgentWork);
+      $('sidebarClaimButton').addEventListener('click', openSelectedAgentClaimCalendar);
+      $('sidebarTeamCalendarButton').addEventListener('click', openSelectedAgentTeamCalendar);
+      document.querySelectorAll('[data-agent-status]').forEach((button) => {
+        button.addEventListener('click', () => {
+          agentFilters.status = button.dataset.agentStatus || '';
+          if (state) renderAgents(state);
+        });
+      });
+      $('reload').addEventListener('click', () => load($('month').value));
+      $('appSwitch').addEventListener('change', handleAppSwitch);
+      $('importEventsSheet').addEventListener('click', importEventsSheet);
+      $('importAgentsSheet').addEventListener('click', importAgentsSheet);
+      $('importTeamsSheet').addEventListener('click', importTeamsSheet);
+      $('syncSheet').addEventListener('click', syncSheetFromWeb);
+      $('importSheet').addEventListener('click', importSheetToWeb);
+      $('migrateSheet').addEventListener('click', migrateSheetData);
+      $('downloadCsv').addEventListener('click', () => downloadAutomation('csv'));
+      $('downloadJson').addEventListener('click', () => downloadAutomation('json'));
+      $('prevMonth').addEventListener('click', () => shiftMonth(-1));
+      $('nextMonth').addEventListener('click', () => shiftMonth(1));
+      $('eventMode').addEventListener('change', toggleDateMode);
+      $('eventShiftCount').addEventListener('change', updateShiftVisibility);
+      $('prevDateMonth').addEventListener('click', () => shiftDatePickerMonth(-1));
+      $('nextDateMonth').addEventListener('click', () => shiftDatePickerMonth(1));
+      $('clearDateSelection').addEventListener('click', clearPickedDates);
+      $('datePickerGrid').addEventListener('click', (event) => {
+        const button = event.target.closest('[data-date-pick]');
+        if (button) togglePickedDate(button.dataset.datePick);
+      });
+      $('eventForm').startDate.addEventListener('change', () => {
+        eventDatePickerMonth = getDatePickerBaseMonth();
+        renderEventDatePicker();
+      });
+      $('eventForm').endDate.addEventListener('change', renderEventDatePicker);
+      $('eventForm').addEventListener('submit', submitEventForm);
+      $('teamForm').addEventListener('submit', submitTeamForm);
+      $('leaderForm').addEventListener('submit', submitLeaderForm);
+      $('agentForm').addEventListener('submit', submitAgentForm);
+      $('eventReset').addEventListener('click', () => {
+        resetEventForm();
+        setStatus('새 이벤트를 입력할 수 있습니다.');
+      });
+      $('teamReset').addEventListener('click', () => {
+        resetTeamForm();
+        setStatus('새 팀을 입력할 수 있습니다.');
+      });
+      $('leaderReset').addEventListener('click', () => {
+        resetLeaderForm();
+        setStatus('새 팀리더를 입력할 수 있습니다.');
+      });
+      $('agentReset').addEventListener('click', () => {
+        resetAgentForm();
+        setStatus('새 에이전트를 입력할 수 있습니다.');
+      });
+      $('agentSearch').addEventListener('input', (event) => {
+        agentFilters.search = event.target.value || '';
+        if (state) renderAgents(state);
+      });
+      $('agentTeamFilter').addEventListener('change', (event) => {
+        agentFilters.team = event.target.value || '';
+        if (state) renderAgents(state);
+      });
+      $('agentRoleFilter').addEventListener('change', (event) => {
+        agentFilters.role = event.target.value || '';
+        if (state) renderAgents(state);
+      });
+      document.body.addEventListener('click', (event) => {
+        const deleteButton = event.target.closest('[data-delete-event]');
+        if (deleteButton) deleteEvent(deleteButton.dataset.deleteEvent);
+        const editButton = event.target.closest('[data-edit-event]');
+        if (editButton) editEvent(editButton.dataset.editEvent);
+        const editTeamButton = event.target.closest('[data-edit-team]');
+        if (editTeamButton) editTeam(editTeamButton.dataset.editTeam);
+        const deleteTeamButton = event.target.closest('[data-delete-team]');
+        if (deleteTeamButton) deleteTeam(deleteTeamButton.dataset.deleteTeam);
+        const editAgentButton = event.target.closest('[data-edit-agent]');
+        if (editAgentButton) editAgent(editAgentButton.dataset.editAgent);
+        const deleteAgentButton = event.target.closest('[data-delete-agent]');
+        if (deleteAgentButton) deleteAgent(deleteAgentButton.dataset.deleteAgent);
+        const endAgentButton = event.target.closest('[data-end-agent]');
+        if (endAgentButton) endAgentWork(endAgentButton.dataset.endAgent);
+        const detailButton = event.target.closest('[data-claim-detail]');
+        if (detailButton) {
+          activeClaimSelection = detailButton.dataset.claimDetail;
+          if (state) renderCalendar(state);
+        }
+        const closeClaimButton = event.target.closest('[data-close-claim-detail]');
+        if (closeClaimButton) {
+          activeClaimSelection = '';
+          if (state) renderCalendar(state);
+        }
+        if (event.target.id === 'claimModal') {
+          activeClaimSelection = '';
+          if (state) renderCalendar(state);
+        }
+        const claimButton = event.target.closest('[data-claim-slot]');
+        if (claimButton) claimSlot(claimButton.closest('.claim-slot'));
+        const approveButton = event.target.closest('[data-approve-slot]');
+        if (approveButton) updateSlotStatus(approveButton.closest('.claim-slot'), '배정완료');
+        const rejectButton = event.target.closest('[data-reject-slot]');
+        if (rejectButton) updateSlotStatus(rejectButton.closest('.claim-slot'), '반려');
+        const workApproveButton = event.target.closest('[data-work-approve]');
+        if (workApproveButton) updateWorkApproval(workApproveButton.closest('.work-item'), '배정완료');
+        const workRejectButton = event.target.closest('[data-work-reject]');
+        if (workRejectButton) updateWorkApproval(workRejectButton.closest('.work-item'), '반려');
+        const workDbButton = event.target.closest('[data-work-db-save]');
+        if (workDbButton) saveWorkDb(workDbButton.closest('.work-item'));
+      });
+      $('calendar').addEventListener('change', (event) => {
+        const slot = event.target.closest('.claim-slot');
+        if (slot) saveSlot(slot);
+      });
+
+      populateTimeSelects();
+      updateShiftVisibility();
+      toggleDateMode();
+      const today = new Date();
+      $('month').value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+      updateMonthDisplay($('month').value);
+      load();
+    </script>
+  </body>
+</html>
