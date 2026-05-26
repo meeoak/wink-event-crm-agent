@@ -159,7 +159,7 @@ function renderDayCell(day) {
   const cards = visibleEvents.map((event, index) => renderEventCard(day, event, index)).join('');
   return `<div class="day-cell${dayClass}">
     <div class="day-head"><span class="day-num">${day.day}</span><span class="day-name">${escapeHtml(dayName)}</span></div>
-    <div class="event-list">${cards || '<span class="muted-mini">선택 가능한 이벤트 없음</span>'}</div>
+    <div class="event-list">${cards}</div>
   </div>`;
 }
 
@@ -168,9 +168,9 @@ function renderEventCard(day, event, index) {
   return `<button class="event-card color-${index % 4}" type="button" data-open-event="${escapeHtml(groupKey(day.date, event.id))}">
     <strong>${escapeHtml(event.venue)}</strong>
     <span class="event-meta">
-      <span class="count-dot open" title="선택 가능">${summary.open}</span>
-      <span class="count-dot pending" title="승인중">${summary.pending}</span>
-      <span class="count-dot approved" title="승인완료">${summary.approved}</span>
+      <span class="count-dot open" title="선택 가능"><b>${summary.open}</b> 가능</span>
+      <span class="count-dot pending" title="승인중"><b>${summary.pending}</b> 승인</span>
+      <span class="count-dot approved" title="승인완료"><b>${summary.approved}</b> 완료</span>
     </span>
   </button>`;
 }
@@ -217,11 +217,11 @@ function renderSlotRow(day, event, slot) {
     data-base-time="${escapeHtml(slot.baseTime || slot.time)}"
     data-time="${escapeHtml(slot.time || slot.baseTime)}"
     data-slot="${Number(slot.slot)}"
+    data-db="${escapeHtml(slot.db || '')}"
     data-status="${escapeHtml(slot.status || '')}">
     <div class="slot-cell"><select data-start>${timeOptionsHtml(time.start)}</select></div>
     <div class="slot-cell"><select data-end>${timeOptionsHtml(time.end)}</select></div>
     <div class="slot-cell agent"><select data-agent>${agentOptions}</select></div>
-    <div class="slot-cell db"><input data-db type="number" min="0" value="${escapeHtml(slot.db || '')}" placeholder="DB"></div>
     <div class="slot-cell action">${action}</div>
   </div>`;
 }
@@ -229,7 +229,7 @@ function renderSlotRow(day, event, slot) {
 function actionButtonHtml(status) {
   if (status === 'open') return '<button class="slot-action" data-claim type="button">선점</button>';
   if (status === 'pending') return '<button class="slot-action pending" type="button" disabled>승인중</button>';
-  return '<button class="slot-action done" data-save-db type="button">DB 저장</button>';
+  return '<button class="slot-action done" type="button" disabled>승인완료</button>';
 }
 
 function bindSlotActions() {
@@ -247,13 +247,15 @@ function claimSlot(row) {
     showToast('에이전트를 먼저 선택해주세요.');
     return;
   }
+  showToast('신청되었습니다. 팀리더 승인 대기중입니다.');
+  setStatus('신청되었습니다. 저장 중입니다.');
   setRowBusy(row, true);
   applyLocalSlot(payload);
   renderAfterSlotChange();
   jsonp(Object.assign({ api: 'claimSlot' }, payload))
     .then((result) => {
       if (!result || result.ok === false) throw new Error(result && result.message ? result.message : '선점하지 못했습니다.');
-      showToast('승인을 요청했습니다.');
+      showToast('신청되었습니다. 팀리더 승인 대기중입니다.');
       loadData();
     })
     .catch((error) => {
@@ -305,7 +307,7 @@ function payloadFromRow(row, status) {
     customTime: time,
     slot: row.dataset.slot,
     agent,
-    db: row.querySelector('[data-db]').value,
+    db: row.querySelector('[data-db]') ? row.querySelector('[data-db]').value : (row.dataset.db || ''),
     status
   };
 }

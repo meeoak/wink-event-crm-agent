@@ -153,6 +153,32 @@
         min-width: 88px;
         padding: 0 18px;
       }
+      .language-toggle {
+        display: inline-flex;
+        align-items: center;
+        flex: 0 0 auto;
+        gap: 6px;
+        padding: 5px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fff;
+      }
+      .toolbar .lang-btn {
+        min-width: 82px;
+        height: 36px;
+        padding: 0 14px;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--navy);
+        font-size: 13px;
+        font-weight: 900;
+      }
+      .toolbar .lang-btn.active {
+        background: var(--pink);
+        color: #fff;
+        box-shadow: 0 6px 14px rgba(242, 73, 141, 0.22);
+      }
       .month-nav {
         display: flex;
         align-items: center;
@@ -692,20 +718,20 @@
       .event-day-cell.sunday .event-day-num span { color: var(--red); }
       .event-chip-list {
         display: grid;
-        gap: 6px;
+        gap: 8px;
       }
       .event-chip {
         width: 100%;
-        min-height: 64px;
+        min-height: 54px;
         height: auto;
         display: grid;
         grid-template-columns: 1fr;
-        gap: 8px;
+        gap: 6px;
         align-items: stretch;
-        padding: 8px 10px;
-        border-radius: 10px;
-        border: 1px solid rgba(16, 35, 61, 0.08);
-        background: #f4faff;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid #d5e5f2;
+        background: #fff;
         color: var(--navy);
         text-align: left;
         box-shadow: none;
@@ -716,44 +742,53 @@
       }
       .event-chip-name {
         overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        font-size: 13px;
+        display: block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 15px;
         font-weight: 900;
-        line-height: 1.25;
+        line-height: 1.2;
       }
       .event-chip-meta {
         display: flex;
-        gap: 5px;
+        gap: 10px;
         align-items: center;
         justify-content: flex-start;
+        flex-wrap: wrap;
         font-size: 11px;
         color: var(--muted);
         font-weight: 900;
       }
+      .chip-dot strong {
+        display: inline-block;
+        min-width: 14px;
+        margin-right: 2px;
+        color: var(--navy);
+        font-size: 13px;
+        font-weight: 1000;
+      }
       .chip-dot {
-        min-width: 30px;
-        padding: 4px 7px;
-        border-radius: 999px;
-        background: #fff;
+        min-width: 0;
+        padding: 0;
+        border-radius: 0;
+        background: transparent;
         text-align: center;
         white-space: nowrap;
       }
       .chip-dot.open { color: var(--blue); }
-      .chip-dot.pending { color: #b45309; background: #fff7d6; }
-      .chip-dot.approved { color: #166534; background: #dcfce7; }
-      .event-chip.color-0 { border-left: 5px solid var(--blue); }
-      .event-chip.color-1 { border-left: 5px solid var(--pink); }
-      .event-chip.color-2 { border-left: 5px solid #6b5cff; }
-      .event-chip.color-3 { border-left: 5px solid #22c55e; }
+      .chip-dot.pending { color: #b45309; }
+      .chip-dot.approved { color: #166534; }
+      .event-chip.color-0 { border-left: 6px solid var(--blue); }
+      .event-chip.color-1 { border-left: 6px solid var(--pink); }
+      .event-chip.color-2 { border-left: 6px solid #6b5cff; }
+      .event-chip.color-3 { border-left: 6px solid #22c55e; }
       .assignment-chip {
         width: 100%;
         min-height: 62px;
         height: auto;
         display: grid;
         gap: 3px;
-        padding: 8px 9px;
+        padding: 10px 12px;
         border: 1px solid rgba(16, 35, 61, 0.08);
         border-left: 5px solid var(--blue);
         border-radius: 10px;
@@ -822,13 +857,13 @@
         grid-template-columns: repeat(2, minmax(180px, 1fr));
       }
       .claim-detail {
-        width: min(860px, calc(100vw - 42px));
+        width: min(760px, calc(100vw - 42px));
         max-height: calc(100vh - 120px);
         border: 1px solid var(--line);
-        border-radius: 18px;
+        border-radius: 22px;
         background: #fff;
         overflow: auto;
-        box-shadow: 0 12px 28px rgba(16, 35, 61, 0.08);
+        box-shadow: 0 20px 50px rgba(16, 35, 61, 0.16);
       }
       .claim-modal {
         position: fixed;
@@ -848,14 +883,14 @@
         grid-template-columns: minmax(0, 1fr) auto;
         gap: 12px;
         align-items: start;
-        padding: 15px 16px;
+        padding: 20px 22px;
         border-bottom: 1px solid var(--line);
-        background: linear-gradient(90deg, #f6fbff, #fff6fb);
+        background: #fbfdff;
       }
       .claim-detail-title { min-width: 0; }
       .claim-detail-head strong {
         display: block;
-        font-size: 20px;
+        font-size: 24px;
         color: var(--navy);
       }
       .claim-detail-head span {
@@ -877,31 +912,33 @@
         line-height: 1;
       }
       .claim-detail-body {
-        padding: 14px;
+        padding: 20px 22px 24px;
       }
       .claim-card {
         border: 1px solid #cfe3f2;
-        border-radius: 14px;
+        border-radius: 16px;
         overflow: hidden;
         background: #fbfdff;
+        max-width: 680px;
+        margin: 0 auto;
       }
       .claim-event-name {
-        padding: 12px 14px;
+        padding: 14px 16px;
         background: var(--event);
         color: #fff;
-        font-size: 16px;
+        font-size: 19px;
         font-weight: 900;
         text-align: center;
       }
       .claim-slot {
         display: grid;
-        grid-template-columns: 78px 78px minmax(150px, 1fr) 58px auto;
+        grid-template-columns: 84px 84px minmax(150px, 190px) minmax(142px, 1fr);
         align-items: center;
         border-top: 1px solid var(--line);
         background: #fff;
       }
       .claim-slot > div {
-        min-height: 38px;
+        min-height: 44px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -910,34 +947,34 @@
       .claim-slot > div:last-child { border-right: 0; }
       .claim-slot .time { background: #eff9ff; }
       .claim-slot .agent { background: #fff8fc; }
-      .claim-slot .db { background: #f4fbff; }
       .claim-slot .slot-actions {
-        gap: 5px;
-        padding: 4px;
-        justify-content: flex-start;
+        gap: 6px;
+        padding: 5px 7px;
+        justify-content: stretch;
       }
       .claim-slot select,
       .claim-slot input {
         width: 100%;
-        height: 30px;
+        height: 36px;
         border: 0;
         background: transparent;
         text-align: center;
         font-weight: 900;
-        font-size: 12px;
-      }
-      .claim-slot .db input {
-        max-width: 54px;
+        font-size: 13px;
       }
       .claim-action {
-        height: 28px;
-        padding: 0 10px;
-        border-radius: 999px;
-        font-size: 12px;
+        min-width: 104px;
+        height: 34px;
+        padding: 0 18px;
+        border-radius: 12px;
+        font-size: 13px;
+      }
+      .claim-action.secondary {
+        width: 100%;
       }
       .claim-status {
-        padding: 4px 8px;
-        border-radius: 999px;
+        padding: 6px 9px;
+        border-radius: 10px;
         background: #fff4cc;
         color: #7a4b00;
         font-size: 12px;
@@ -998,6 +1035,29 @@
       .shift-three { background: #f3f0ff; }
       .shift-card.disabled {
         display: none;
+      }
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 28px;
+        z-index: 80;
+        transform: translateX(-50%) translateY(18px);
+        opacity: 0;
+        pointer-events: none;
+        padding: 13px 20px;
+        border-radius: 999px;
+        background: var(--navy);
+        color: #fff;
+        font-weight: 900;
+        box-shadow: 0 14px 34px rgba(16, 35, 61, 0.22);
+        transition: opacity 160ms ease, transform 160ms ease;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+      .toast.error {
+        background: #be3455;
       }
       .date-mode-panel {
         display: none;
@@ -1150,6 +1210,10 @@
           <option value="leader">리더 웹앱</option>
           <option value="agent">에이전트 웹앱</option>
         </select>
+        <div class="language-toggle" aria-label="Language">
+          <button class="lang-btn" type="button" data-lang="id">Indonesia</button>
+          <button class="lang-btn" type="button" data-lang="ko">한국어</button>
+        </div>
         <button id="reload" type="button">새로고침</button>
       </div>
     </header>
@@ -1291,15 +1355,15 @@
               <div class="field"><label>행사 시간 개수</label><select name="shiftCount" id="eventShiftCount"><option value="1">1부만 사용</option><option value="2" selected>1부 + 2부</option><option value="3">1부 + 2부 + 3부</option></select></div>
               <div class="field schedule-period"><label>시작일</label><input name="startDate" type="date"></div>
               <div class="field schedule-period"><label>종료일</label><input name="endDate" type="date"></div>
+              <div class="field shift-card shift-one" data-shift-card="1"><label>1부 필요인원</label><input name="people1" type="number" min="0" max="20" value="2"></div>
               <div class="field shift-card shift-one" data-shift-card="1"><label>1부 시작</label><select name="time1Start" data-time-select data-default="10:00"></select></div>
               <div class="field shift-card shift-one" data-shift-card="1"><label>1부 종료</label><select name="time1End" data-time-select data-default="14:00"></select></div>
-              <div class="field shift-card shift-one" data-shift-card="1"><label>1부 인원</label><input name="people1" type="number" min="0" max="20" value="2"></div>
+              <div class="field shift-card shift-two" data-shift-card="2"><label>2부 필요인원</label><input name="people2" type="number" min="0" max="20" value="2"></div>
               <div class="field shift-card shift-two" data-shift-card="2"><label>2부 시작</label><select name="time2Start" data-time-select data-default="14:00"></select></div>
               <div class="field shift-card shift-two" data-shift-card="2"><label>2부 종료</label><select name="time2End" data-time-select data-default="18:00"></select></div>
-              <div class="field shift-card shift-two" data-shift-card="2"><label>2부 인원</label><input name="people2" type="number" min="0" max="20" value="2"></div>
+              <div class="field shift-card shift-three" data-shift-card="3"><label>3부 필요인원</label><input name="people3" type="number" min="0" max="20" value="2"></div>
               <div class="field shift-card shift-three" data-shift-card="3"><label>3부 시작</label><select name="time3Start" data-time-select data-default="18:00"></select></div>
               <div class="field shift-card shift-three" data-shift-card="3"><label>3부 종료</label><select name="time3End" data-time-select data-default="22:00"></select></div>
-              <div class="field shift-card shift-three" data-shift-card="3"><label>3부 인원</label><input name="people3" type="number" min="0" max="20" value="2"></div>
               <div class="field full" id="dateListField">
                 <label>지정일 선택</label>
                 <textarea class="date-list-input" name="dateList" readonly></textarea>
@@ -1432,13 +1496,148 @@
       </main>
     </div>
 
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
     <script>
       const $ = (id) => document.getElementById(id);
       const weekdays = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
       const TIME_OPTIONS = buildTimeOptions();
-      const LEADER_API_URL = 'https://script.google.com/macros/s/AKfycbzAfGJXv4aatclHflxYMJhqna29zmOiQ3fcE8wQTDN47hDMzRJj8k4GljZYot2c4BacPQ/exec';
       const AGENT_WEBAPP_URL = 'https://meeoak.github.io/wink-event-crm-agent/';
-      installExternalGoogleScriptRun_();
+      const TEXT_ID = {
+        '팀리더 관리': 'Manajemen Leader',
+        '운영 홈': 'Beranda Operasional',
+        '행사 선점': 'Pilih Event',
+        '승인/DB': 'Approval/DB',
+        '이벤트 등록': 'Input Event',
+        '팀·에이전트': 'Tim & Agen',
+        '통계': 'Statistik',
+        '웹앱 이동': 'Pindah Web App',
+        '리더 웹앱': 'Web App Leader',
+        '에이전트 웹앱': 'Web App Agen',
+        '새로고침': 'Muat Ulang',
+        '에이전트 선택': 'Pilih Agen',
+        '본인 선택': 'Pilih Nama',
+        '에이전트 불러오는 중': 'Memuat agen',
+        '이름을 선택하면 내 업무와 행사 선점 화면을 바로 볼 수 있습니다.': 'Pilih nama agar dapat melihat tugas dan memilih slot event.',
+        '내 업무': 'Tugas Saya',
+        '내 팀 달력': 'Kalender Tim Saya',
+        '운영 요약': 'Ringkasan Operasional',
+        '이벤트': 'Event',
+        '배정률': 'Rasio Penempatan',
+        '미배정': 'Belum Terisi',
+        '총 DB': 'Total DB',
+        '미배정 슬롯': 'Slot Belum Terisi',
+        'DB 미입력': 'DB Belum Diisi',
+        'MVP 운영 홈': 'Beranda Operasional MVP',
+        '행사 선점하기': 'Pilih Slot Event',
+        '전체': 'Semua',
+        '에이전트 미배정': 'Agen Belum Terisi',
+        '배정완료': 'Sudah Terisi',
+        '이벤트 종료': 'Event Selesai',
+        '시트 업로드 또는 웹 입력으로 행사, 날짜, 시간, 인원을 넣습니다.': 'Masukkan event, tanggal, jam, dan jumlah orang lewat sheet atau web.',
+        '에이전트가 왼쪽에서 본인을 선택한 뒤 원하는 슬롯을 선점합니다.': 'Agen memilih nama di kiri lalu mengambil slot yang diinginkan.',
+        '팀리더 승인': 'Approval Leader',
+        '승인/DB 보드에서 승인중 슬롯을 빠르게 확정합니다.': 'Leader mengonfirmasi slot pending di board approval/DB.',
+        'DB 입력': 'Input DB',
+        '행사 종료 후 같은 슬롯에 DB 수를 입력하고 통계를 확인합니다.': 'Setelah event selesai, input jumlah DB di slot yang sama dan cek statistik.',
+        '자동화시트 동기화': 'Sinkronisasi Sheet Otomatis',
+        '필요한 항목만 골라서 불러올 수 있습니다.': 'Pilih data yang diperlukan untuk dimuat.',
+        '이벤트 불러오기': 'Muat Event',
+        '에이전트관리 불러오기': 'Muat Agen',
+        '팀관리 불러오기': 'Muat Tim',
+        '전체 동기화': 'Sinkron Semua',
+        '배정슬롯 가져오기': 'Ambil Slot Penempatan',
+        '마이그레이션 점검': 'Cek Migrasi',
+        'CSV 다운로드': 'Unduh CSV',
+        'JSON 다운로드': 'Unduh JSON',
+        '이벤트 운영 목록': 'Daftar Operasional Event',
+        'NO': 'NO',
+        '기간': 'Periode',
+        '일수': 'Hari',
+        '기본 시간': 'Jam Dasar',
+        '상태': 'Status',
+        '관리': 'Kelola',
+        '행사 선점 달력': 'Kalender Pilih Event',
+        '팀별 달력': 'Kalender per Tim',
+        '에이전트별 달력': 'Kalender per Agen',
+        '선택 가능': 'Tersedia',
+        '승인중': 'Menunggu Approval',
+        '승인완료': 'Disetujui',
+        '팀리더 승인/DB 보드': 'Board Approval Leader/DB',
+        '내 일정': 'Jadwal Saya',
+        '승인 대기': 'Menunggu Approval',
+        '이벤트명': 'Nama Event',
+        'Event ID': 'Event ID',
+        '일정 방식': 'Metode Jadwal',
+        '행사 시간 개수': 'Jumlah Sesi Event',
+        '시작일': 'Tanggal Mulai',
+        '종료일': 'Tanggal Selesai',
+        '1부 필요인원': 'Jumlah Orang Sesi 1',
+        '1부 시작': 'Mulai Sesi 1',
+        '1부 종료': 'Selesai Sesi 1',
+        '2부 필요인원': 'Jumlah Orang Sesi 2',
+        '2부 시작': 'Mulai Sesi 2',
+        '2부 종료': 'Selesai Sesi 2',
+        '3부 필요인원': 'Jumlah Orang Sesi 3',
+        '3부 시작': 'Mulai Sesi 3',
+        '3부 종료': 'Selesai Sesi 3',
+        '지정일 선택': 'Pilih Tanggal Tertentu',
+        '기간 전체를 선택하면 시작일~종료일 전체가 자동 반영됩니다.': 'Jika memilih periode, semua tanggal dari mulai sampai selesai otomatis masuk.',
+        '이벤트 저장': 'Simpan Event',
+        '새 이벤트 입력': 'Input Event Baru',
+        '등록된 이벤트 삭제': 'Hapus Event Terdaftar',
+        '팀 관리': 'Manajemen Tim',
+        '팀리더 등록': 'Daftar Leader',
+        '에이전트 등록': 'Daftar Agen',
+        '팀 현황': 'Status Tim',
+        '전체 에이전트 목록': 'Daftar Semua Agen',
+        '이름': 'Nama',
+        '역할': 'Peran',
+        '팀': 'Tim',
+        '업무시작': 'Mulai Kerja',
+        '업무종료': 'Selesai Kerja',
+        '거주지': 'Domisili',
+        '연락처': 'Kontak',
+        '수정': 'Ubah',
+        '삭제': 'Hapus',
+        '종료일 입력': 'Input Tanggal Selesai',
+        '에이전트 DB 순위': 'Ranking DB Agen',
+        '순위': 'Peringkat',
+        '에이전트': 'Agen',
+        '선택': 'Pilih',
+        '선점': 'Ambil',
+        '승인': 'Setujui',
+        '반려': 'Tolak',
+        '없음': 'Tidak ada',
+        '표시할 이벤트가 없습니다.': 'Tidak ada event untuk ditampilkan.',
+        '선택 가능한 이벤트 없음': 'Tidak ada event tersedia',
+        '달력을 불러오는 중...': 'Memuat kalender...',
+        '로컬 파일 미리보기입니다. 실제 데이터는 배포 URL에서 열어야 불러올 수 있습니다.': 'Ini pratinjau file lokal. Data asli hanya dimuat dari URL deployment.',
+        '현재 리더 웹앱입니다.': 'Saat ini di web app leader.',
+        '먼저 달력 데이터를 불러와 주세요.': 'Muat data kalender terlebih dahulu.',
+        '왼쪽에서 에이전트를 먼저 선택해 주세요.': 'Pilih agen dari panel kiri terlebih dahulu.',
+        '선택한 에이전트 정보를 찾을 수 없습니다.': 'Data agen yang dipilih tidak ditemukan.',
+        '에이전트를 먼저 선택해주세요.': 'Pilih agen terlebih dahulu.',
+        '신청되었습니다. 팀리더 승인 대기중입니다.': 'Permintaan dikirim. Menunggu approval leader.',
+        '반려되었습니다.': 'Ditolak.',
+        '승인완료로 변경했습니다.': 'Diubah menjadi disetujui.',
+        '이벤트를 저장하는 중...': 'Menyimpan event...',
+        '이벤트명을 입력해주세요.': 'Masukkan nama event.',
+        '기간 방식에서는 시작일과 종료일을 선택해야 합니다.': 'Untuk metode periode, pilih tanggal mulai dan selesai.',
+        '지정일 방식에서는 달력에서 행사일을 하나 이상 선택해야 합니다.': 'Untuk tanggal tertentu, pilih minimal satu tanggal event di kalender.',
+        '배포 URL에서만 저장할 수 있습니다.': 'Hanya bisa disimpan dari URL deployment.',
+        '배포 URL에서만 수정할 수 있습니다.': 'Hanya bisa diubah dari URL deployment.',
+        '배포 URL에서만 삭제할 수 있습니다.': 'Hanya bisa dihapus dari URL deployment.',
+        '배포 URL에서만 동기화할 수 있습니다.': 'Hanya bisa sinkron dari URL deployment.',
+        '배포 URL에서만 다운로드할 수 있습니다.': 'Hanya bisa unduh dari URL deployment.',
+        '새 이벤트를 입력할 수 있습니다.': 'Silakan input event baru.',
+        '새 팀을 입력할 수 있습니다.': 'Silakan input tim baru.',
+        '새 팀리더를 입력할 수 있습니다.': 'Silakan input leader baru.',
+        '새 에이전트를 입력할 수 있습니다.': 'Silakan input agen baru.',
+        'DB 입력 후 표시됩니다.': 'Ditampilkan setelah DB diinput.'
+      };
+      const TEXT_KO = Object.fromEntries(Object.entries(TEXT_ID).map(([ko, id]) => [id, ko]));
+      let currentLang = localStorage.getItem('winkEventLang') || 'ko';
       let state = null;
       let eventFilter = 'all';
       let claimFilter = 'open';
@@ -1453,84 +1652,68 @@
       let eventDateSelection = new Set();
       let eventDatePickerMonth = null;
 
-      function installExternalGoogleScriptRun_() {
-        if (typeof google !== 'undefined' && google.script && google.script.run) return;
-        window.google = {
-          script: {
-            run: createExternalRunner_(null, null)
-          }
-        };
-      }
-
-      function createExternalRunner_(successHandler, failureHandler) {
-        return new Proxy({}, {
-          get(_, prop) {
-            if (prop === 'withSuccessHandler') {
-              return (handler) => createExternalRunner_(handler, failureHandler);
-            }
-            if (prop === 'withFailureHandler') {
-              return (handler) => createExternalRunner_(successHandler, handler);
-            }
-            return (...args) => {
-              externalLeaderCall_(String(prop), args)
-                .then((result) => {
-                  if (result && result.ok === false) throw new Error(result.message || '요청에 실패했습니다.');
-                  if (successHandler) successHandler(result);
-                })
-                .catch((error) => {
-                  if (failureHandler) failureHandler(error);
-                  else console.error(error);
-                });
-              return createExternalRunner_(successHandler, failureHandler);
-            };
-          }
-        });
-      }
-
-      function externalLeaderCall_(method, args) {
-        const callback = `__winkLeader${Date.now()}${Math.random().toString(16).slice(2)}`;
-        const params = new URLSearchParams({
-          api: 'leaderCall',
-          method,
-          args: JSON.stringify(args || []),
-          callback
-        });
-        return new Promise((resolve, reject) => {
-          const script = document.createElement('script');
-          const timer = setTimeout(() => {
-            cleanup();
-            reject(new Error('요청 시간이 초과되었습니다.'));
-          }, 30000);
-
-          window[callback] = (data) => {
-            cleanup();
-            resolve(data);
-          };
-
-          script.onerror = () => {
-            cleanup();
-            reject(new Error('API 연결에 실패했습니다.'));
-          };
-
-          function cleanup() {
-            clearTimeout(timer);
-            delete window[callback];
-            script.remove();
-          }
-
-          script.src = `${LEADER_API_URL}?${params.toString()}`;
-          document.body.appendChild(script);
-        });
-      }
-
       function appsReady() {
         return typeof google !== 'undefined' && google.script && google.script.run;
       }
 
+      function localizeText(text) {
+        const source = String(text == null ? '' : text);
+        const trimmed = source.trim();
+        if (!trimmed) return source;
+        const dict = currentLang === 'id' ? TEXT_ID : TEXT_KO;
+        if (dict[trimmed]) return source.replace(trimmed, dict[trimmed]);
+        return source;
+      }
+
+      function applyLanguage(root) {
+        document.documentElement.lang = currentLang === 'id' ? 'id' : 'ko';
+        document.querySelectorAll('[data-lang]').forEach((button) => {
+          button.classList.toggle('active', button.dataset.lang === currentLang);
+        });
+        const target = root || document.body;
+        const walker = document.createTreeWalker(target, NodeFilter.SHOW_TEXT, {
+          acceptNode(node) {
+            const parent = node.parentElement;
+            if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+            if (parent && ['SCRIPT', 'STYLE'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
+            if (parent && parent.closest('.language-toggle')) return NodeFilter.FILTER_REJECT;
+            return NodeFilter.FILTER_ACCEPT;
+          }
+        });
+        const nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach((node) => {
+          node.nodeValue = localizeText(node.nodeValue);
+        });
+        document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach((node) => {
+          node.placeholder = localizeText(node.placeholder);
+        });
+        document.querySelectorAll('[aria-label]').forEach((node) => {
+          if (node.closest('.language-toggle')) return;
+          node.setAttribute('aria-label', localizeText(node.getAttribute('aria-label')));
+        });
+      }
+
+      function setLanguage(lang) {
+        currentLang = lang === 'id' ? 'id' : 'ko';
+        localStorage.setItem('winkEventLang', currentLang);
+        applyLanguage();
+      }
+
       function setStatus(text, error) {
         const node = $('status');
-        node.textContent = text || '';
+        node.textContent = localizeText(text || '');
         node.className = error ? 'status error' : 'status';
+      }
+
+      function showToast(message, error) {
+        const toast = $('toast');
+        if (!toast || !message) return;
+        toast.textContent = localizeText(message);
+        toast.classList.toggle('error', !!error);
+        toast.classList.add('show');
+        clearTimeout(showToast.timer);
+        showToast.timer = setTimeout(() => toast.classList.remove('show'), 2400);
       }
 
       function switchView(viewId) {
@@ -1598,6 +1781,7 @@
         renderAgents(data);
         renderWorkBoard(data);
         renderCalendar(data);
+        applyLanguage();
       }
 
       function updateMonthDisplay(monthValue) {
@@ -2262,7 +2446,7 @@
         const events = dayGroup ? dayGroup.events.map((eventGroup, index) => renderEventChip(eventGroup, index)).join('') : '';
         return `<div class="event-day-cell${dayClass}">
           <div class="event-day-num"><strong>${escapeHtml(day.day)}</strong><span>${escapeHtml(dayName)}</span></div>
-          <div class="event-chip-list">${events || '<span class="muted-mini">선택 가능한 이벤트 없음</span>'}</div>
+          <div class="event-chip-list">${events}</div>
         </div>`;
       }
 
@@ -2272,9 +2456,9 @@
         return `<button class="event-chip color-${index % 4}${active}" type="button" data-claim-detail="${escapeHtml(eventGroup.key)}">
           <span class="event-chip-name">${escapeHtml(eventGroup.event.venue)}</span>
           <span class="event-chip-meta">
-            <span class="chip-dot open" title="선택 가능">${summary.open}</span>
-            <span class="chip-dot pending" title="승인중">${summary.pending}</span>
-            <span class="chip-dot approved" title="승인완료">${summary.approved}</span>
+            <span class="chip-dot open" title="선택 가능"><strong>${summary.open}</strong>가능</span>
+            <span class="chip-dot pending" title="승인중"><strong>${summary.pending}</strong>승인</span>
+            <span class="chip-dot approved" title="승인완료"><strong>${summary.approved}</strong>완료</span>
           </span>
         </button>`;
       }
@@ -2322,11 +2506,10 @@
         }).join('');
         const normalizedStatus = status || (slot.agent ? (slot.status === '배정완료' ? 'approved' : 'pending') : 'open');
         const actionHtml = claimActionHtml(normalizedStatus);
-        return `<div class="claim-slot ${cls}" data-date="${date}" data-event-id="${escapeHtml(event.id)}" data-event-name="${escapeHtml(event.venue)}" data-base-time="${escapeHtml(slot.baseTime || slot.time)}" data-time="${escapeHtml(slot.time)}" data-slot="${slot.slot}" data-status="${escapeHtml(slot.status || '')}">
+        return `<div class="claim-slot ${cls}" data-date="${date}" data-event-id="${escapeHtml(event.id)}" data-event-name="${escapeHtml(event.venue)}" data-base-time="${escapeHtml(slot.baseTime || slot.time)}" data-time="${escapeHtml(slot.time)}" data-slot="${slot.slot}" data-db="${escapeHtml(slot.db || '')}" data-status="${escapeHtml(slot.status || '')}">
           <div class="time"><select class="slot-start">${timeOptionsHtml(timeParts.start)}</select></div>
           <div class="time"><select class="slot-end">${timeOptionsHtml(timeParts.end)}</select></div>
           <div class="agent"><select>${agentOptions}</select></div>
-          <div class="db"><input type="number" min="0" value="${escapeHtml(slot.db || '')}" placeholder="DB" title="DB"></div>
           <div class="slot-actions">${actionHtml}</div>
         </div>`;
       }
@@ -2457,6 +2640,7 @@
         const customTime = joinTimeRangeClient(slotNode.querySelector('.slot-start').value, slotNode.querySelector('.slot-end').value);
         const baseTime = slotNode.dataset.baseTime || slotNode.dataset.time;
         const agent = slotNode.querySelector('.agent select').value;
+        const dbInput = slotNode.querySelector('.db input');
         const payload = {
           date: slotNode.dataset.date,
           eventId: slotNode.dataset.eventId,
@@ -2466,19 +2650,23 @@
           customTime: customTime || baseTime,
           slot: Number(slotNode.dataset.slot),
           agent,
-          db: slotNode.querySelector('.db input').value,
+          db: dbInput ? dbInput.value : (slotNode.dataset.db || ''),
           status: agent ? (slotNode.dataset.status || '승인대기') : ''
         };
         if (nextFilter) claimFilter = nextFilter;
         applySlotPayloadLocal(payload);
         render(state);
         setStatus(successMessage || '저장 중...');
+        if (successMessage) showToast(successMessage);
         google.script.run
           .withSuccessHandler(() => {
             setStatus(successMessage || '저장되었습니다.');
+            if (successMessage) showToast(successMessage);
           })
           .withFailureHandler((err) => {
-            setStatus(err && err.message ? err.message : String(err), true);
+            const message = err && err.message ? err.message : String(err);
+            setStatus(message, true);
+            showToast(message, true);
             load(state.month);
           })
           .saveCalendarAssignment(payload);
@@ -2486,11 +2674,13 @@
 
       function claimSlot(slotNode) {
         if (!slotNode.querySelector('.agent select').value) {
-          setStatus('선점할 에이전트를 먼저 선택해주세요.', true);
+          const message = '에이전트를 먼저 선택해주세요.';
+          setStatus(message, true);
+          showToast(message, true);
           return;
         }
         slotNode.dataset.status = '승인대기';
-        saveSlot(slotNode, '승인을 요청했습니다.', 'pending');
+        saveSlot(slotNode, '신청되었습니다. 팀리더 승인 대기중입니다.', 'pending');
       }
 
       function updateSlotStatus(slotNode, status) {
@@ -2505,7 +2695,9 @@
         claimFilter = status === '반려' ? 'open' : 'approved';
         applyAssignmentStatusLocal(payload, status);
         render(state);
-        setStatus(status === '반려' ? '반려되었습니다.' : '승인완료로 변경했습니다.');
+        const message = status === '반려' ? '반려되었습니다.' : '승인완료로 변경했습니다.';
+        setStatus(message);
+        showToast(message);
         google.script.run
           .withSuccessHandler(() => {
             setStatus(status === '반려' ? '반려되었습니다.' : '승인완료로 변경했습니다.');
@@ -3176,6 +3368,9 @@
       });
       $('reload').addEventListener('click', () => load($('month').value));
       $('appSwitch').addEventListener('change', handleAppSwitch);
+      document.querySelectorAll('[data-lang]').forEach((button) => {
+        button.addEventListener('click', () => setLanguage(button.dataset.lang));
+      });
       $('importEventsSheet').addEventListener('click', importEventsSheet);
       $('importAgentsSheet').addEventListener('click', importAgentsSheet);
       $('importTeamsSheet').addEventListener('click', importTeamsSheet);
@@ -3285,6 +3480,7 @@
       const today = new Date();
       $('month').value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
       updateMonthDisplay($('month').value);
+      applyLanguage();
       load();
     </script>
   </body>
