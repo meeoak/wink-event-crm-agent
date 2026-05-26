@@ -1,12 +1,95 @@
 const DEFAULT_API_URL = 'https://script.google.com/macros/s/AKfycbzAfGJXv4aatclHflxYMJhqna29zmOiQ3fcE8wQTDN47hDMzRJj8k4GljZYot2c4BacPQ/exec';
 const PAGE_PARAMS = new URLSearchParams(location.search);
 const API_URL = PAGE_PARAMS.get('apiUrl') || PAGE_PARAMS.get('api') || DEFAULT_API_URL;
-const WEEKDAYS = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 const STORAGE_KEY = 'wink.agent.name';
+const STORAGE_LANG_KEY = 'wink.agent.lang';
+const WEEKDAYS_BY_LANG = {
+  ko: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
+  id: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']
+};
+const TEXT = {
+  ko: {
+    brandTitle: 'Agent Event',
+    prevMonth: '이전 달',
+    nextMonth: '다음 달',
+    reload: '새로고침',
+    agentPanel: '에이전트',
+    selfSelect: '본인 선택',
+    nameLabel: '이름',
+    agentPlaceholder: '에이전트를 선택하세요',
+    agentHint: '본인 이름을 선택한 뒤 행사 슬롯을 선점하세요.',
+    myRequests: '내 신청',
+    noRequests: '신청한 일정이 없습니다.',
+    dbMissing: 'DB 미입력',
+    none: '없음',
+    loading: '달력을 불러오는 중...',
+    loadFailed: '데이터를 불러오지 못했습니다.',
+    loaded: '{month} 이벤트 {count}개를 불러왔습니다.',
+    calendarTitle: '행사 선점 달력',
+    open: '선택 가능',
+    pending: '승인중',
+    approved: '승인완료',
+    dbInput: 'DB 입력',
+    available: '가능',
+    approval: '승인',
+    done: '완료',
+    slots: '{count}개 슬롯',
+    select: '선택',
+    claim: '선점',
+    chooseAgentFirst: '에이전트를 먼저 선택해주세요.',
+    claimSaving: '신청되었습니다. 저장 중입니다.',
+    claimSent: '신청되었습니다. 팀리더 승인 대기중입니다.',
+    claimFailed: '선점하지 못했습니다.',
+    agentMissing: '에이전트 정보가 없습니다.',
+    dbSaved: 'DB를 저장했습니다.',
+    dbFailed: 'DB를 저장하지 못했습니다.',
+    timeout: '요청 시간이 초과되었습니다.',
+    apiError: 'API 연결에 실패했습니다.'
+  },
+  id: {
+    brandTitle: 'Agent Event',
+    prevMonth: 'Bulan sebelumnya',
+    nextMonth: 'Bulan berikutnya',
+    reload: 'Muat ulang',
+    agentPanel: 'Agen',
+    selfSelect: 'Pilih nama',
+    nameLabel: 'Nama',
+    agentPlaceholder: 'Pilih agen',
+    agentHint: 'Pilih nama Anda, lalu ambil slot event.',
+    myRequests: 'Pengajuan Saya',
+    noRequests: 'Belum ada jadwal yang diajukan.',
+    dbMissing: 'DB Belum Diisi',
+    none: 'Tidak ada',
+    loading: 'Memuat kalender...',
+    loadFailed: 'Data tidak berhasil dimuat.',
+    loaded: '{month} memuat {count} event.',
+    calendarTitle: 'Kalender Ambil Event',
+    open: 'Tersedia',
+    pending: 'Menunggu',
+    approved: 'Disetujui',
+    dbInput: 'Input DB',
+    available: 'tersedia',
+    approval: 'menunggu',
+    done: 'selesai',
+    slots: '{count} slot',
+    select: 'Pilih',
+    claim: 'Ambil',
+    chooseAgentFirst: 'Pilih agen terlebih dahulu.',
+    claimSaving: 'Pengajuan dikirim. Menyimpan...',
+    claimSent: 'Pengajuan dikirim. Menunggu persetujuan team leader.',
+    claimFailed: 'Slot tidak berhasil diambil.',
+    agentMissing: 'Informasi agen tidak ada.',
+    dbSaved: 'DB tersimpan.',
+    dbFailed: 'DB tidak berhasil disimpan.',
+    timeout: 'Waktu permintaan habis.',
+    apiError: 'Gagal terhubung ke API.'
+  }
+};
 
 const state = {
   month: '',
   agent: '',
+  lang: 'ko',
   filter: 'open',
   data: null,
   activeGroup: null
@@ -14,11 +97,39 @@ const state = {
 
 const $ = (id) => document.getElementById(id);
 
+function t(key, params) {
+  const dict = TEXT[state.lang] || TEXT.ko;
+  let text = dict[key] || TEXT.ko[key] || key;
+  Object.entries(params || {}).forEach(([name, value]) => {
+    text = text.replace(new RegExp(`\\{${name}\\}`, 'g'), value);
+  });
+  return text;
+}
+
+function weekdays() {
+  return WEEKDAYS_BY_LANG[state.lang] || WEEKDAYS_BY_LANG.ko;
+}
+
+function applyLanguage() {
+  document.documentElement.lang = state.lang === 'id' ? 'id' : 'ko';
+  document.querySelectorAll('[data-i18n]').forEach((node) => {
+    node.textContent = t(node.dataset.i18n);
+  });
+  document.querySelectorAll('[data-i18n-aria]').forEach((node) => {
+    node.setAttribute('aria-label', t(node.dataset.i18nAria));
+  });
+  document.querySelectorAll('[data-lang]').forEach((button) => {
+    button.classList.toggle('active', button.dataset.lang === state.lang);
+  });
+}
+
 function boot() {
   state.month = new URLSearchParams(location.search).get('month') || currentMonth();
   state.agent = localStorage.getItem(STORAGE_KEY) || '';
+  state.lang = localStorage.getItem(STORAGE_LANG_KEY) === 'id' ? 'id' : 'ko';
   $('monthInput').value = state.month;
   $('agentSelect').value = state.agent;
+  applyLanguage();
   bindEvents();
   loadData();
 }
@@ -35,6 +146,16 @@ function bindEvents() {
     state.agent = $('agentSelect').value;
     localStorage.setItem(STORAGE_KEY, state.agent);
     render();
+  });
+  document.querySelectorAll('[data-lang]').forEach((button) => {
+    button.addEventListener('click', () => {
+      state.lang = button.dataset.lang === 'id' ? 'id' : 'ko';
+      localStorage.setItem(STORAGE_LANG_KEY, state.lang);
+      applyLanguage();
+      render();
+      if (state.data) setStatus(t('loaded', { month: state.month, count: state.data.eventCount || 0 }));
+      if (state.activeGroup) openGroup(state.activeGroup);
+    });
   });
   document.querySelectorAll('[data-filter]').forEach((button) => {
     button.addEventListener('click', () => {
@@ -57,15 +178,15 @@ function shiftMonth(offset) {
 }
 
 function loadData() {
-  setStatus('달력을 불러오는 중...');
+  setStatus(t('loading'));
   jsonp({ api: 'agentData', month: state.month, agent: state.agent })
     .then((data) => {
-      if (!data || data.ok === false) throw new Error(data && data.message ? data.message : '데이터를 불러오지 못했습니다.');
+      if (!data || data.ok === false) throw new Error(data && data.message ? data.message : t('loadFailed'));
       state.data = data;
       state.month = data.month || state.month;
       $('monthInput').value = state.month;
       render();
-      setStatus(`${state.month} 이벤트 ${data.eventCount || 0}개를 불러왔습니다.`);
+      setStatus(t('loaded', { month: state.month, count: data.eventCount || 0 }));
     })
     .catch((error) => {
       setStatus(error.message || String(error), true);
@@ -88,7 +209,7 @@ function renderAgents() {
     .map((agent) => agent.name);
   const names = unique(activeAgents.length ? activeAgents : (state.data.agents || []).filter((name) => !/^Pilih /.test(name)));
   const selected = state.agent;
-  select.innerHTML = '<option value="">에이전트를 선택하세요</option>' + names.map((name) => {
+  select.innerHTML = `<option value="">${escapeHtml(t('agentPlaceholder'))}</option>` + names.map((name) => {
     return `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`;
   }).join('');
   if (selected && names.includes(selected)) select.value = selected;
@@ -119,7 +240,7 @@ function renderSidebar() {
       <strong>${escapeHtml(item.event.venue)}</strong>
       <span>${escapeHtml(item.day.date)} · ${escapeHtml(timeText(item.slot))} · ${statusText(slotStatus(item.slot))}</span>
     </button>`;
-  }).join('') : '<span class="empty">신청한 일정이 없습니다.</span>';
+  }).join('') : `<span class="empty">${escapeHtml(t('noRequests'))}</span>`;
 
   const missingDb = mine.filter((item) => slotStatus(item.slot) === 'approved' && !item.slot.db);
   $('dbMissingList').innerHTML = missingDb.length ? missingDb.slice(0, 12).map((item) => {
@@ -127,7 +248,7 @@ function renderSidebar() {
       <strong>${escapeHtml(item.event.venue)}</strong>
       <span>${escapeHtml(item.day.date)} · ${escapeHtml(timeText(item.slot))}</span>
     </button>`;
-  }).join('') : '<span class="empty">없음</span>';
+  }).join('') : `<span class="empty">${escapeHtml(t('none'))}</span>`;
 
   document.querySelectorAll('[data-open-group]').forEach((button) => {
     button.addEventListener('click', () => openGroup(button.dataset.openGroup));
@@ -136,7 +257,7 @@ function renderSidebar() {
 
 function renderCalendar() {
   const calendar = $('calendar');
-  const weekdayHtml = WEEKDAYS.map((day, index) => {
+  const weekdayHtml = weekdays().map((day, index) => {
     const cls = index === 5 ? ' sat' : index === 6 ? ' sun' : '';
     return `<div class="weekday${cls}">${day}</div>`;
   }).join('');
@@ -151,7 +272,7 @@ function renderCalendar() {
 
 function renderDayCell(day) {
   if (!day) return '<div class="day-cell empty"></div>';
-  const dayName = WEEKDAYS[(day.weekday + 6) % 7] || '';
+  const dayName = weekdays()[(day.weekday + 6) % 7] || '';
   const dayClass = day.weekday === 6 ? ' sat' : day.weekday === 0 ? ' sun' : '';
   const visibleEvents = (day.events || []).filter((event) => {
     return (event.slots || []).some((slot) => isVisibleSlot(slot));
@@ -168,9 +289,9 @@ function renderEventCard(day, event, index) {
   return `<button class="event-card color-${index % 4}" type="button" data-open-event="${escapeHtml(groupKey(day.date, event.id))}">
     <strong>${escapeHtml(event.venue)}</strong>
     <span class="event-meta">
-      <span class="count-dot open" title="선택 가능"><b>${summary.open}</b> 가능</span>
-      <span class="count-dot pending" title="승인중"><b>${summary.pending}</b> 승인</span>
-      <span class="count-dot approved" title="승인완료"><b>${summary.approved}</b> 완료</span>
+      <span class="count-dot open" title="${escapeHtml(t('open'))}"><b>${summary.open}</b> ${escapeHtml(t('available'))}</span>
+      <span class="count-dot pending" title="${escapeHtml(t('pending'))}"><b>${summary.pending}</b> ${escapeHtml(t('approval'))}</span>
+      <span class="count-dot approved" title="${escapeHtml(t('approved'))}"><b>${summary.approved}</b> ${escapeHtml(t('done'))}</span>
     </span>
   </button>`;
 }
@@ -179,9 +300,9 @@ function openGroup(key) {
   const group = findGroup(key);
   if (!group) return;
   state.activeGroup = key;
-  const dayName = WEEKDAYS[(group.day.weekday + 6) % 7] || '';
+  const dayName = weekdays()[(group.day.weekday + 6) % 7] || '';
   $('modalTitle').textContent = group.event.venue;
-  $('modalMeta').textContent = `${group.day.date} · ${dayName} · ${group.event.slots.length}개 슬롯`;
+  $('modalMeta').textContent = `${group.day.date} · ${dayName} · ${t('slots', { count: group.event.slots.length })}`;
   $('slotTable').innerHTML = renderSlotTable(group);
   $('modal').classList.add('open');
   $('modal').setAttribute('aria-hidden', 'false');
@@ -227,9 +348,9 @@ function renderSlotRow(day, event, slot) {
 }
 
 function actionButtonHtml(status) {
-  if (status === 'open') return '<button class="slot-action" data-claim type="button">선점</button>';
-  if (status === 'pending') return '<button class="slot-action pending" type="button" disabled>승인중</button>';
-  return '<button class="slot-action done" type="button" disabled>승인완료</button>';
+  if (status === 'open') return `<button class="slot-action" data-claim type="button">${escapeHtml(t('claim'))}</button>`;
+  if (status === 'pending') return `<button class="slot-action pending" type="button" disabled>${escapeHtml(t('pending'))}</button>`;
+  return `<button class="slot-action done" type="button" disabled>${escapeHtml(t('approved'))}</button>`;
 }
 
 function bindSlotActions() {
@@ -244,18 +365,18 @@ function bindSlotActions() {
 function claimSlot(row) {
   const payload = payloadFromRow(row, '승인대기');
   if (!payload.agent) {
-    showToast('에이전트를 먼저 선택해주세요.');
+    showToast(t('chooseAgentFirst'));
     return;
   }
-  showToast('신청되었습니다. 팀리더 승인 대기중입니다.');
-  setStatus('신청되었습니다. 저장 중입니다.');
+  showToast(t('claimSent'));
+  setStatus(t('claimSaving'));
   setRowBusy(row, true);
   applyLocalSlot(payload);
   renderAfterSlotChange();
   jsonp(Object.assign({ api: 'claimSlot' }, payload))
     .then((result) => {
-      if (!result || result.ok === false) throw new Error(result && result.message ? result.message : '선점하지 못했습니다.');
-      showToast('신청되었습니다. 팀리더 승인 대기중입니다.');
+      if (!result || result.ok === false) throw new Error(result && result.message ? result.message : t('claimFailed'));
+      showToast(t('claimSent'));
       loadData();
     })
     .catch((error) => {
@@ -269,7 +390,7 @@ function saveDb(row) {
   const status = row.dataset.status || '배정완료';
   const payload = payloadFromRow(row, status);
   if (!payload.agent) {
-    showToast('에이전트 정보가 없습니다.');
+    showToast(t('agentMissing'));
     return;
   }
   setRowBusy(row, true);
@@ -277,8 +398,8 @@ function saveDb(row) {
   renderAfterSlotChange();
   jsonp(Object.assign({ api: 'saveDb' }, payload))
     .then((result) => {
-      if (!result || result.ok === false) throw new Error(result && result.message ? result.message : 'DB를 저장하지 못했습니다.');
-      showToast('DB를 저장했습니다.');
+      if (!result || result.ok === false) throw new Error(result && result.message ? result.message : t('dbFailed'));
+      showToast(t('dbSaved'));
       loadData();
     })
     .catch((error) => {
@@ -384,9 +505,9 @@ function slotStatus(slot) {
 }
 
 function statusText(status) {
-  if (status === 'approved') return '승인완료';
-  if (status === 'pending') return '승인중';
-  return '선택 가능';
+  if (status === 'approved') return t('approved');
+  if (status === 'pending') return t('pending');
+  return t('open');
 }
 
 function summarizeSlots(slots) {
@@ -411,7 +532,7 @@ function agentOptionsHtml(selected) {
     .filter((agent) => agent.status !== '업무종료')
     .map((agent) => agent.name);
   const names = unique(activeAgents.length ? activeAgents : (state.data.agents || []).filter((name) => !/^Pilih /.test(name)));
-  return '<option value="">선택</option>' + names.map((name) => {
+  return `<option value="">${escapeHtml(t('select'))}</option>` + names.map((name) => {
     const selectedAttr = name === selected ? 'selected' : '';
     return `<option value="${escapeHtml(name)}" ${selectedAttr}>${escapeHtml(name)}</option>`;
   }).join('');
@@ -474,7 +595,7 @@ function jsonp(params) {
     const script = document.createElement('script');
     const timer = setTimeout(() => {
       cleanup();
-      reject(new Error('요청 시간이 초과되었습니다.'));
+      reject(new Error(t('timeout')));
     }, 25000);
 
     window[callback] = (data) => {
@@ -484,7 +605,7 @@ function jsonp(params) {
 
     script.onerror = () => {
       cleanup();
-      reject(new Error('API 연결에 실패했습니다.'));
+      reject(new Error(t('apiError')));
     };
 
     function cleanup() {

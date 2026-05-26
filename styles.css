@@ -117,6 +117,36 @@ button {
   box-shadow: 0 10px 20px rgba(216, 79, 138, 0.18);
 }
 
+.language-toggle {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 6px;
+  min-height: 46px;
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.lang-btn {
+  min-width: 90px;
+  height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.lang-btn.active {
+  background: var(--pink);
+  color: #fff;
+  box-shadow: 0 8px 16px rgba(216, 79, 138, 0.18);
+}
+
 .app-shell {
   display: grid;
   grid-template-columns: 270px minmax(900px, 1fr);

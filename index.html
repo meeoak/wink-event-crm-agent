@@ -10,13 +10,17 @@
   <header class="topbar">
     <div class="brand" aria-label="Wink Event CRM">
       <span class="brand-wink">wink</span>
-      <span class="brand-title">Agent Event</span>
+      <span class="brand-title" data-i18n="brandTitle">Agent Event</span>
     </div>
     <div class="toolbar">
-      <button id="prevMonth" class="icon-button" type="button" aria-label="이전 달">‹</button>
+      <button id="prevMonth" class="icon-button" type="button" aria-label="이전 달" data-i18n-aria="prevMonth">‹</button>
       <input id="monthInput" type="month" value="2026-05">
-      <button id="nextMonth" class="icon-button" type="button" aria-label="다음 달">›</button>
-      <button id="reloadButton" class="primary" type="button">새로고침</button>
+      <button id="nextMonth" class="icon-button" type="button" aria-label="다음 달" data-i18n-aria="nextMonth">›</button>
+      <div class="language-toggle" aria-label="Language">
+        <button class="lang-btn" type="button" data-lang="id">Indonesia</button>
+        <button class="lang-btn" type="button" data-lang="ko">한국어</button>
+      </div>
+      <button id="reloadButton" class="primary" type="button" data-i18n="reload">새로고침</button>
     </div>
   </header>
 
@@ -24,27 +28,27 @@
     <aside class="sidebar">
       <section class="panel">
         <div class="panel-head">
-          <h2>에이전트</h2>
-          <span class="pill">본인 선택</span>
+          <h2 data-i18n="agentPanel">에이전트</h2>
+          <span class="pill" data-i18n="selfSelect">본인 선택</span>
         </div>
-        <label class="field-label" for="agentSelect">이름</label>
+        <label class="field-label" for="agentSelect" data-i18n="nameLabel">이름</label>
         <select id="agentSelect">
           <option value="">에이전트를 선택하세요</option>
         </select>
-        <p class="hint">본인 이름을 선택한 뒤 행사 슬롯을 선점하세요.</p>
+        <p class="hint" data-i18n="agentHint">본인 이름을 선택한 뒤 행사 슬롯을 선점하세요.</p>
       </section>
 
       <section class="panel">
-        <h2>내 신청</h2>
+        <h2 data-i18n="myRequests">내 신청</h2>
         <div id="myList" class="stack-list">
-          <span class="empty">신청한 일정이 없습니다.</span>
+          <span class="empty" data-i18n="noRequests">신청한 일정이 없습니다.</span>
         </div>
       </section>
 
       <section class="panel">
-        <h2>DB 미입력</h2>
+        <h2 data-i18n="dbMissing">DB 미입력</h2>
         <div id="dbMissingList" class="stack-list">
-          <span class="empty">없음</span>
+          <span class="empty" data-i18n="none">없음</span>
         </div>
       </section>
     </aside>
@@ -52,14 +56,14 @@
     <main class="main">
       <div class="page-head">
         <div>
-          <p id="statusLine" class="status-line">달력을 불러오는 중...</p>
-          <h1>행사 선점 달력</h1>
+          <p id="statusLine" class="status-line" data-i18n="loading">달력을 불러오는 중...</p>
+          <h1 data-i18n="calendarTitle">행사 선점 달력</h1>
         </div>
         <div class="summary-tabs">
-          <button class="summary active" data-filter="open" type="button">선택 가능 <b id="countOpen">0</b></button>
-          <button class="summary" data-filter="pending" type="button">승인중 <b id="countPending">0</b></button>
-          <button class="summary" data-filter="approved" type="button">승인완료 <b id="countApproved">0</b></button>
-          <button class="summary" data-filter="db" type="button">DB 입력 <b id="countDb">0</b></button>
+          <button class="summary active" data-filter="open" type="button"><span data-i18n="open">선택 가능</span> <b id="countOpen">0</b></button>
+          <button class="summary" data-filter="pending" type="button"><span data-i18n="pending">승인중</span> <b id="countPending">0</b></button>
+          <button class="summary" data-filter="approved" type="button"><span data-i18n="approved">승인완료</span> <b id="countApproved">0</b></button>
+          <button class="summary" data-filter="db" type="button"><span data-i18n="dbInput">DB 입력</span> <b id="countDb">0</b></button>
         </div>
       </div>
 
